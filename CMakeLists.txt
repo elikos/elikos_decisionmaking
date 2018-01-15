@@ -20,7 +20,9 @@ catkin_package(
 
 include_directories(
     src/ai
-    src/emulator)
+    src/emulator
+    src/decisionmaking)
 
 add_subdirectory(src/ai)
 add_subdirectory(src/emulator)
+add_subdirectory(src/decisionmaking)

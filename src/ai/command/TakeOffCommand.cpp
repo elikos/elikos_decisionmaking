@@ -34,7 +34,7 @@ void TakeOffCommand::execute()
     destination_.setY(currentPosition.getOrigin().y());
     destination_.setZ(takeoff_altitude);
 
-    MessageHandler::getInstance()->sendDestination(destination_, CmdCode::TAKEOFF);
+    MessageHandler::getInstance()->sendDestination(destination_, elikos_msgs::DMCmd::TAKEOFF);
 }
 
 bool TakeOffCommand::isCommmandDone()

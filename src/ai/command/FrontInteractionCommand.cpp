@@ -29,7 +29,7 @@ FrontInteractionCommand::~FrontInteractionCommand()
 void FrontInteractionCommand::execute()
 {
     ai::MessageHandler::getInstance()->publishAiStateCommand("Front interaction command");
-    MessageHandler::getInstance()->sendDestination(destination_, CmdCode::FRONT_INTERACTION);
+    MessageHandler::getInstance()->sendDestination(destination_, elikos_msgs::DMCmd::FRONT_INTERACTION);
 }
 
 bool FrontInteractionCommand::isCommmandDone()

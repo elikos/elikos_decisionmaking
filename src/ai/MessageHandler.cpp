@@ -71,7 +71,7 @@ void MessageHandler::lookForMav()
     Agent::getInstance()->updateQuadRobot(poseTf);
 }
 
-void MessageHandler::sendDestination(const tf::Vector3& destination, CmdCode cmd_code)
+void MessageHandler::sendDestination(const tf::Vector3& destination, int cmd_code)
 {
     tf::Pose pose(tf::Quaternion(0.0, 0.0, 0.0, 1.0), destination);
     tf::Stamped<tf::Pose> stPose(pose, ros::Time::now(), WORLD_FRAME);

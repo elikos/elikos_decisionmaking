@@ -28,7 +28,7 @@ void TopInteractionCommand::execute()
     ai::MessageHandler::getInstance()->publishAiStateCommand("Top interaction command");
     tf::Vector3 destination = target_->getPose().getOrigin();
     destination.setZ(0.0);
-    MessageHandler::getInstance()->sendDestination(destination, CmdCode::TOP_INTERACTION);
+    MessageHandler::getInstance()->sendDestination(destination, elikos_msgs::DMCmd::TOP_INTERACTION);
 }
 
 

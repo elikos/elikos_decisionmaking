@@ -31,7 +31,7 @@ ObservationCommand::~ObservationCommand()
 void ObservationCommand::execute()
 {
     ai::MessageHandler::getInstance()->publishAiStateCommand("Observation command");
-    MessageHandler::getInstance()->sendDestination(observation_position_, CmdCode::MOVE_TO_POINT);
+    MessageHandler::getInstance()->sendDestination(observation_position_, elikos_msgs::DMCmd::MOVE_TO_POINT);
 }
 
 

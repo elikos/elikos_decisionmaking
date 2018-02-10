@@ -7,7 +7,7 @@
 
 #include <elikos_msgs/TargetRobot.h>
 #include <elikos_msgs/TargetRobotArray.h>
-#include <elikos_msgs/AICmd.h>
+#include <elikos_msgs/DMCmd.h>
 #include <tf/transform_broadcaster.h>
 #include <CmdDefines.h>
 #include "std_msgs/String.h"

@@ -24,7 +24,7 @@ MessageHandler::MessageHandler()
     agent_ = Agent::getInstance();
     trgtSub_ = nh_.subscribe<elikos_msgs::TargetRobotArray>(TRGT_TOPIC, 1, &MessageHandler::handleTrgtMsg, this);
     simPub_ = nh_.advertise<geometry_msgs::PoseStamped>(SETPOINT_TOPIC, 1);
-    cmdPub_ = nh_.advertise<elikos_msgs::AICmd>(CMD_TOPIC, 1);
+    cmdPub_ = nh_.advertise<elikos_msgs::DMCmd>(CMD_TOPIC, 1);
     nh_.param<bool>("/elikos_decisionmaking/simulation", is_simulation_, false);
     statePubBehavior_ = nh_.advertise<std_msgs::String>("/elikos_decisionmaking_state_behavior", 1);
     statePubCommand_ = nh_.advertise<std_msgs::String>("/elikos_decisionmaking_state_command", 1);
@@ -82,7 +82,7 @@ void MessageHandler::sendDestination(const tf::Vector3& destination, CmdCode cmd
     if (is_simulation_) simPub_.publish(msg);
     else
     {
-        elikos_msgs::AICmd cmd_msg;
+        elikos_msgs::DMCmd cmd_msg;
         cmd_msg.pose = msg;
         cmd_msg.cmdCode = cmd_code;
         cmdPub_.publish(cmd_msg);

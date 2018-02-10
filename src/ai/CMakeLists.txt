@@ -69,8 +69,8 @@ set(CONSIDERATION_SRC
     consideration/AbstractConsideration.h
     consideration/QuadDistance.cpp
     consideration/QuadDistance.h
-		consideration/DestinationConsideration.cpp
-		consideration/DestinationConsideration.h
+	consideration/DestinationConsideration.cpp
+	consideration/DestinationConsideration.h
     consideration/ConsiderationTypes.h
     consideration/ClusterSize.cpp
     consideration/ClusterSize.h)

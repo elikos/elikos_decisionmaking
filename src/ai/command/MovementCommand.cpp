@@ -23,7 +23,7 @@ MovementCommand::~MovementCommand()
 void MovementCommand::execute()
 {
     ai::MessageHandler::getInstance()->publishAiStateCommand("Movement command");
-    MessageHandler::getInstance()->sendDestination(destination_, CmdCode::MOVE_TO_POINT);
+    MessageHandler::getInstance()->sendDestination(destination_, elikos_msgs::DMCmd::MOVE_TO_POINT);
 }
 
 bool MovementCommand::isCommmandDone()

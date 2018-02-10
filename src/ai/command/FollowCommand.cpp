@@ -27,7 +27,7 @@ void FollowCommand::execute()
     ai::MessageHandler::getInstance()->publishAiStateCommand("Follow target command");
     tf::Vector3 destination = target_->getPose().getOrigin();
     destination.setZ(flight_height_);
-    MessageHandler::getInstance()->sendDestination(destination, CmdCode::MOVE_TO_POINT);
+    MessageHandler::getInstance()->sendDestination(destination, elikos_msgs::DMCmd::MOVE_TO_POINT);
 }
 
 bool FollowCommand::isCommmandDone()

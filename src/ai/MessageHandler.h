@@ -9,7 +9,6 @@
 #include <elikos_msgs/TargetRobotArray.h>
 #include <elikos_msgs/DMCmd.h>
 #include <tf/transform_broadcaster.h>
-#include <CmdDefines.h>
 #include "std_msgs/String.h"
 
 namespace tf
@@ -35,7 +34,7 @@ public:
 
     void lookForMessages();
     void lookForMav();
-    void sendDestination(const tf::Vector3& destination, CmdCode cmd_code);
+    void sendDestination(const tf::Vector3& destination, int cmd_code);
     void publishAiStateBehavior(std::string state);
     void publishAiStateCommand(std::string state);
 

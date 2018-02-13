@@ -4,6 +4,10 @@ include_directories(
 
 add_executable(elikos_decisionmaking2018
     DecisionMaking.cpp
+    command/Command.h
+    behaviour/Behaviour.h
+    strategy/Strategy.h
+    strategy/TestFollowRobotStrategy.h
 )
 
 target_link_libraries(elikos_decisionmaking2018

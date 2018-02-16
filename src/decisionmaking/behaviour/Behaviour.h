@@ -9,6 +9,7 @@
  */
 
 #include "Command.h"
+#include "CommandQueue.h"
 
 /**
  * \class Behaviour
@@ -33,8 +34,16 @@ public:
      */
     virtual void stop() =0;
 
+protected:
+    CommandQueue cmdQ_; /**< command queue */
+
+    /**
+     * \brief Generate commands and add to command queue.
+     * \todo should this automatically add takeoff+landing commands to queue?
+     */
+    virtual void generateCommands() =0;
+
 private:
-    // \todo command queue
 
 };
 

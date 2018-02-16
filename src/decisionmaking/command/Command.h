@@ -9,6 +9,7 @@
  */
 
 #include <ros/ros.h> // \todo remove?
+#include <tf/tf.h>
 
 /**
  * \class Command
@@ -39,16 +40,26 @@ protected:
     // quad
     // target
 
-    double hasReachedDestinationThreshold_; /**< threshold for checking is destination is reached */
+    double hasReachedDestinationThreshold_; /**< threshold for checking if destination is reached (value from param server) */
 
     /**
-     * \brief Checks if the destination was reached; useful for position-dependant commands.
+     * \brief Checks if the destination has been reached; 
+     * useful for position-dependant commands.
      * 
-     * \todo add necessary params
+     * \param currentPos : current position.
+     * \param dest : destination position.
      * 
-     * \return true when destination was reached.
+     * \return true when destination has been reached.
      */
-    bool hasReachedDestination();
+    bool hasReachedDestination(const tf::Vector3& currentPos, const tf::Vector3& dest);
+
+    /**
+     * \brief Helper method to send DM commands.
+     * \todo implement following message handler implementation
+     * \param pose : destination/target pose.
+     * \param cmdCode : command code (according to elikos_msgs::DMCmd).
+     */
+    void sendDmCmd(const tf::Vector3& pose, int cmdCode);
 
 
 private:

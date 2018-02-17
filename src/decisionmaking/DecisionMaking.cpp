@@ -6,7 +6,7 @@
 
 #include <string>
 #include "Strategy.h"
-
+#include "DmMessageHandler.h"
 
 int main(int argc, char* argv[])
 {
@@ -24,6 +24,8 @@ int main(int argc, char* argv[])
     //Strategy* strat = new Whatever();
     //strat->launch();
 
+    //MessageHandler::getInstance()
+
     /*
     ros::Rate rate(1);
     while (ros::ok())
@@ -34,4 +36,6 @@ int main(int argc, char* argv[])
         rate.sleep();
     }
     */
+
+    //DmMessageHandler::freeInstance();
 }

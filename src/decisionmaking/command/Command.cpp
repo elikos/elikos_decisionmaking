@@ -6,6 +6,7 @@
  */
 
 #include "Command.h"
+#include "DmMessageHandler.h"
 
 Command::Command()
     : hasReachedDestinationThreshold_(0.2)
@@ -32,6 +33,6 @@ bool Command::hasReachedDestination(const tf::Vector3& currentPos, const tf::Vec
     return std::abs(distance) < hasReachedDestinationThreshold_;
 }
 
-void Command::sendDmCmd(const tf::Vector3& pose, int cmdCode) {
-    // \todo implement
+void Command::sendDmCmd(const geometry_msgs::Pose& destPose, int cmdCode) {
+    MessageHandler::getInstance()->publishDmCmd(destPose, cmdCode);
 }

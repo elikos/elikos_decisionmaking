@@ -56,11 +56,10 @@ protected:
     /**
      * \brief Helper method to send DM commands.
      * \todo implement following message handler implementation
-     * \param pose : destination/target pose.
+     * \param destPose : destination/target pose.
      * \param cmdCode : command code (according to elikos_msgs::DMCmd).
      */
-    void sendDmCmd(const tf::Vector3& pose, int cmdCode);
-
+    void sendDmCmd(const geometry_msgs::Pose& destPose, int cmdCode);
 
 private:
     

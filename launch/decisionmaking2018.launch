@@ -1,5 +1,5 @@
 <launch>
-    <arg name="config" default="$(find elikos_decisionmaking)/cfg/decisionmaking_params.yaml"/>
+    <arg name="config" default="$(find elikos_decisionmaking)/cfg/decisionmaking2018.yaml"/>
     
     <node name="elikos_decisionmaking2018" pkg="elikos_decisionmaking" type="elikos_decisionmaking2018" output="screen">
        <rosparam command="load" file="$(arg config)"/>

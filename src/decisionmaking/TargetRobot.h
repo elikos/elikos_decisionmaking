@@ -7,7 +7,9 @@
  * \author christophebedard
  */
 
-#include <geometry_msgs/Point.h>
+#include <cmath>
+#include <tf/transform_datatypes.h>
+#include <geometry_msgs/Pose.h>
 
 /**
  * \class TargetRobot
@@ -43,11 +45,25 @@ public:
     double getOrientation() const;
 
     /**
+     * \brief Incertitude count accessor.
+     * 
+     * \return the incertitude count.
+     */
+    int getIncertitudeCount() const;
+
+    /**
+     * \brief Create and return pose.
+     * 
+     * \return the pose.
+     */
+    geometry_msgs::Pose& getPose() const;
+
+    /**
      * \brief Update target robot position+orientation and reset counter.
      * 
      * \param pos : the latest position.
      */
-    void updatePose(geometry_msgs::Point pos);
+    void updatePosition(const geometry_msgs::Point& pos);
 
     /**
      * \brief Increment incertitude counter.
@@ -61,8 +77,16 @@ private:
     int incertitudeCount_; /**< the counter of updates since it was last seen */
 
     /**
+     * \brief Update orientation by estimating it from last positions.
+     * 
+     * \param newPos : the latest position.
+     */
+    void updateOrientation(const geometry_msgs::Point& newPos);
+
+
+    /**
      * \brief Deleted default constructor.
-     * If a new target robot is created, its instant position is known.
+     * If a new target robot is created, its instant position has to be known.
      */
     TargetRobot() = delete;
 };

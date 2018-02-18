@@ -55,9 +55,9 @@ public:
     void updateTargets(const elikos_msgs::TargetRobotArray::ConstPtr& msg);
 
     /**
-     * \brief Checks if target list is non-empty.
+     * \brief Checks if valid target list is non-empty.
      * 
-     * \return true if >= 1 target.
+     * \return true if >= 1 valid target.
      */
 	bool hasTarget() const;
 
@@ -80,6 +80,9 @@ private:
     
     std::list<TargetRobot*> targets_; /**< the list of target robots */
     Quad* quad_; /**< the quad */
+
+    int arenaDimension_; /**< the dimension of the arena (side) */
+    int targetIncertitudeCountThreshold_; /**< the threshold defining valid targets */
 
     /**
      * \brief Private constructor.

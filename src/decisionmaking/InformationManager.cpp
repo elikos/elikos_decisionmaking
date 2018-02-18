@@ -22,6 +22,11 @@ void InformationManager::freeInstance() {
 
 InformationManager::InformationManager() {
     quad_ = new Quad();
+
+    // get param
+    ros::NodeHandle n_p("~");
+    n_p.getParam("dimension_c", arenaDimension_);
+    n_p.getParam("target_incertitude_count_threshold", targetIncertitudeCountThreshold_);
 }
 
 InformationManager::~InformationManager() {
@@ -38,15 +43,18 @@ geometry_msgs::Pose InformationManager::getQuadPose() const {
 
 void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::ConstPtr& msg) {
     // \todo implement
+
     // compute distance between each current target and each new target
     // assign new target to current target corresponding to min distance
     // repeat until there are no current targets
     // if there are more new targets than current ones, create and add them to the list
+    
+    // DmMessageHandler::getInstance()->publishTargetPoses();
 }
 
 bool InformationManager::hasTarget() const {
     // \todo implement
-    // count number of target with counter value below threshold
+    // count number of targets with counter value below threshold
     return false;
 }
 

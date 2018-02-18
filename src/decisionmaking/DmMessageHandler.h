@@ -53,16 +53,6 @@ public:
      */
     void publishCurrentDmState(const std::string& state);
 
-    /**
-     * \brief Deleted copy constructor.
-     */
-    DmMessageHandler(const DmMessageHandler&) = delete;
-
-    /**
-     * \brief Deleted copy assignment.
-     */
-    void operator=(const DmMessageHandler&)  = delete;
-
 private:
     static DmMessageHandler* instance_; /**< the instance itself */
 
@@ -103,6 +93,16 @@ private:
      * \brief Private destructor.
      */
     ~DmMessageHandler();
+
+    /**
+     * \brief Deleted copy constructor.
+     */
+    DmMessageHandler(const DmMessageHandler&) = delete;
+
+    /**
+     * \brief Deleted copy assignment.
+     */
+    void operator=(const DmMessageHandler&)  = delete;
 
 };
 

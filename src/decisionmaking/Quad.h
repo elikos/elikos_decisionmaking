@@ -24,9 +24,14 @@ public:
     Quad(geometry_msgs::Pose pose);
 
     /**
+     * \brief Default constructor.
+     */
+    Quad();
+
+    /**
      * \brief Destructor.
      */
-    ~Quad();
+    ~Quad() = default;
 
     /**
      * \brief Position accessor.
@@ -45,10 +50,6 @@ public:
 private:
     geometry_msgs::Pose pose_; /**< the position of the target robot */
 
-    /**
-     * \brief Deleted default constructor.
-     */
-    Quad() = delete;
 };
 
 #endif // ELIKOS_DUNGEONMASTER_QUAD_H

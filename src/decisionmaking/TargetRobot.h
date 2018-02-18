@@ -7,7 +7,7 @@
  * \author christophebedard
  */
 
-#include <tf/Vector3.h>
+#include <geometry_msgs/Point.h>
 
 /**
  * \class TargetRobot
@@ -21,7 +21,7 @@ public:
      * 
      * \param pos : the position of the target robot.
      */
-    TargetRobot(tf::Vector3 pos);
+    TargetRobot(geometry_msgs::Point pos);
 
     /**
      * \brief Destructor.
@@ -33,7 +33,7 @@ public:
      * 
      * \return the latest position.
      */
-    tf::Vector3 getPosition() const;
+    geometry_msgs::Point getPosition() const;
 
     /**
      * \brief Orientation accessor.
@@ -47,7 +47,7 @@ public:
      * 
      * \param pos : the latest position.
      */
-    void updatePose(tf::Vector3 pos);
+    void updatePose(geometry_msgs::Point pos);
 
     /**
      * \brief Increment incertitude counter.
@@ -56,12 +56,13 @@ public:
     void incrementIncertitudeCounter();
 
 private:
-    tf::Vector3 pos_; /**< the position of the target robot */
+    geometry_msgs::Point pos_; /**< the position of the target robot */
     double orientation_; /**< the orientation of the target robot */
     int incertitudeCount_; /**< the counter of updates since it was last seen */
 
     /**
      * \brief Deleted default constructor.
+     * If a new target robot is created, its instant position is known.
      */
     TargetRobot() = delete;
 };

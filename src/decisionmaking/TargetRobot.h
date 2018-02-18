@@ -36,11 +36,18 @@ public:
     tf::Vector3 getPosition() const;
 
     /**
-     * \brief Update target robot position and reset counter.
+     * \brief Orientation accessor.
+     * 
+     * \return the latest orientation.
+     */
+    double getOrientation() const;
+
+    /**
+     * \brief Update target robot position+orientation and reset counter.
      * 
      * \param pos : the latest position.
      */
-    void updatePosition(tf::Vector3 pos);
+    void updatePose(tf::Vector3 pos);
 
     /**
      * \brief Increment incertitude counter.
@@ -50,6 +57,7 @@ public:
 
 private:
     tf::Vector3 pos_; /**< the position of the target robot */
+    double orientation_; /**< the orientation of the target robot */
     int incertitudeCount_; /**< the counter of updates since it was last seen */
 
     /**

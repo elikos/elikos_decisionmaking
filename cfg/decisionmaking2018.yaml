@@ -9,7 +9,7 @@ min_step: 0.3
 max_step: 2
 has_reached_destination_threshold: 0.75
 interaction_altitude: 0.25
-simulation: false
+simulation: true
 debug: true
 # Topics and names for decisionmaking2018
 target_array_topic: /elikos_track_robot_array

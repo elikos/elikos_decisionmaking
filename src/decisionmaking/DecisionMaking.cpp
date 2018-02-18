@@ -7,6 +7,7 @@
 #include <string>
 #include "Strategy.h"
 #include "DmMessageHandler.h"
+#include "InformationManager.h"
 
 int main(int argc, char* argv[])
 {
@@ -24,18 +25,22 @@ int main(int argc, char* argv[])
     //Strategy* strat = new Whatever();
     //strat->launch();
 
-    //MessageHandler::getInstance()
+    // init
+    MessageHandler::getInstance();
+    InformationManager::getInstance();
 
-    /*
-    ros::Rate rate(1);
+    ros::Rate rate(30);
     while (ros::ok())
     {
-        
+        MessageHandler::getInstance()->update();
 
+        // update strategy, behaviour, and command
+
+        MessageHandler::getInstance()->publishCurrentDmState();
         ros::spinOnce();
         rate.sleep();
     }
-    */
 
     //DmMessageHandler::freeInstance();
+    //InformationManager::freeInstance();
 }

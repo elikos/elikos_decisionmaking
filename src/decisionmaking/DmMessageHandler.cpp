@@ -74,8 +74,7 @@ void DmMessageHandler::updateQuadTf() {
 }
 
 void DmMessageHandler::targetRobotArrayCallback(const elikos_msgs::TargetRobotArray::ConstPtr& msg) {
-    // \todo send target robot array to InformationManager
-    //InformationManager::getInstance()->updateTargets(msg);
+    InformationManager::getInstance()->updateTargets(msg);
 }
 
 void DmMessageHandler::publishDmCmd(const geometry_msgs::Pose& destPose, int cmdCode) const {

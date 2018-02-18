@@ -8,8 +8,9 @@
  */
 
 #include <cmath>
-#include <list>
+#include <vector>
 #include <geometry_msgs/Pose.h>
+#include "elikos_msgs/TargetRobotArray.h"
 #include "Behaviour.h"
 #include "Quad.h"
 #include "TargetRobot.h"
@@ -80,7 +81,7 @@ public:
 private:
     static InformationManager* instance_; /**< the instance itself */
     
-    std::list<TargetRobot*> targets_; /**< the list of target robots */
+    std::vector<TargetRobot*> targets_; /**< the list of target robots */
     Quad* quad_; /**< the quad */
 
     int arenaDimension_; /**< the dimension of the arena (side) */
@@ -114,6 +115,13 @@ private:
      * \return the squared distance.
      */
     double distanceSquared(const geometry_msgs::Point& p1, const geometry_msgs::Point& p2) const;
+
+    /**
+     * \brief Retrieve a vector of target poses.
+     * 
+     * \return the vector of poses.
+     */
+    std::vector<geometry_msgs::Pose>& getTargetPoses() const;
 
     /**
      * \brief Private constructor.

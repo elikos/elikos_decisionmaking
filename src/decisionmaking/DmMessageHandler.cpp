@@ -48,22 +48,26 @@ void DmMessageHandler::update() {
 }
 
 void DmMessageHandler::updateQuadTf() {
-    // lookup stamped transform
-    tf::StampedTransform stampedTf;
+    // lookup transform
+    tf::Transform transform;
     try {
-        tfListener_.lookupTransform(originTfName_, quadTfName_, ros::Time(0), stampedTf);
+        tfListener_.lookupTransform(originTfName_, quadTfName_, ros::Time(0), transform);
     } catch(tf::TransformException e) {
         ROS_ERROR("[DM MESSAGE HANDLER] error looking up quad tf");
         return;
     }
 
-    // create stamped tf pose
-    // \todo is *stamped* needed?
-    tf::Stamped<tf::Pose> poseTf;
-    poseTf.setOrigin(stampedTf.getOrigin());
-    poseTf.setRotation(stampedTf.getRotation());
-    // \todo send quad tf to InformationManager
-    //InformationManager::getInstance()->updateTargets(poseTf);
+    // create pose msg
+    geometry_msgs::Transform geoTfMsg;
+    tf::transformTFToMsg(transform, geoTfMsg);
+
+    geometry_msgs::Pose poseMsg;
+    poseMsg.position.x = geoTfMsg.translation.x;
+    poseMsg.position.y = geoTfMsg.translation.y;
+    poseMsg.position.z = geoTfMsg.translation.z;
+    poseMsg.orientation = geoTfMsg.rotation;
+
+    InformationManager::getInstance()->updateQuad(poseMsg);
 }
 
 void DmMessageHandler::targetRobotArrayCallback(const elikos_msgs::TargetRobotArray::ConstPtr& msg) {

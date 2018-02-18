@@ -12,8 +12,11 @@
 #include <ros/ros.h> // \todo remove?
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Transform.h>
+#include <std_msgs/String.h>
 #include "elikos_msgs/TargetRobotArray.h"
 #include "elikos_msgs/DMCmd.h"
+#include "InformationManager.h"
 
 /**
  * \class DmMessageHandler

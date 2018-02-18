@@ -16,4 +16,5 @@ cmd_topic: /elikos_decisionmaking_cmd
 origin_tf_name: /elikos_arena_origin
 quad_tf_name: /elikos_fcu
 dm_state_debug_topic: /elikos_decisionmaking_state_debug
+dm_target_poses_topic: /elikos_decisionmaking_target_poses_debug
 strategy_choice: somerandomstrategy

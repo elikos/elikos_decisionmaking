@@ -44,14 +44,21 @@ public:
      * \param destPose : destination/target pose.
      * \param cmdCode : command code (according to elikos_msgs::DMCmd).
      */
-    void publishDmCmd(const geometry_msgs::Pose& destPose, int cmdCode);
+    void publishDmCmd(const geometry_msgs::Pose& destPose, int cmdCode) const;
 
     /**
      * \brief Publishes the current state string.
      * 
      * \param state : the current state formatted as a string.
      */
-    void publishCurrentDmState(const std::string& state);
+    void publishCurrentDmState(const std::string& state) const;
+
+    /**
+     * \brief Publishes the poses of known targets for debug.
+     * 
+     * \param poses : the poses.
+     */
+    void publishTargetPoses(const std::vector<geometry_msgs::Pose>& poses) const;
 
 private:
     static DmMessageHandler* instance_; /**< the instance itself */
@@ -59,16 +66,19 @@ private:
     ros::NodeHandle nh_; /**< the node hanlde \todo get pointer from DecisionMaking.cpp? */
 
     bool isSimulation_; /**< the simulation state \todo needed? */
+    bool isDebug_; /**< the debug flag */
 
     std::string targetArrayTopic_; /**< the topic for target robot array */
     std::string cmdTopic_; /**< the command topic */
     std::string originTfName_; /**< the tf name for the arena origin */
     std::string quadTfName_; /**< the tf name for the quad's position */
     std::string stateDebugTopic_; /**< the name for the current state debug topic */
+    std::string targetPosesDebugTopic_; /**< the name for the target poses debug topic */
 
     ros::Subscriber targetRobotArraySub_; /**< the target robot array subscriber (INPUT from detection) */
     ros::Publisher dmCmdPub_; /**< the command publisher (OUTPUT to path planning (!sim) or elikos_sim (sim)) */
     ros::Publisher dmCurrentStatePub_; /**< the current state publisher (debug OUTPUT) */
+    ros::Publisher targetPosesDebugPub_; /**< the target poses publisher (debug OUTPUT) */
 
     tf::TransformListener tfListener_; /**< the tf listener */
 

@@ -29,14 +29,17 @@ DmMessageHandler::DmMessageHandler() {
     n_p.getParam("origin_tf_name", originTfName_);
     n_p.getParam("quad_tf_name", quadTfName_);
     n_p.getParam("simulation", isSimulation_);
+    n_p.getParam("debug", isDebug_);
     n_p.getParam("dm_state_debug_topic", stateDebugTopic_);
+    n_p.getParam("dm_target_poses_topic", targetPosesDebugTopic_)
 
     // setup subscribers
     targetRobotArraySub_ = nh_.subscribe<elikos_msgs::TargetRobotArray>(targetArrayTopic_, 1, &DmMessageHandler::targetRobotArrayCallback, this);
     
     // setup publishers
     dmCmdPub_ = nh_.advertise<elikos_msgs::DMCmd>(cmdTopic_, 1);
-    dmCurrentStatePub_ = nh_.advertise<std_msgs::String>(stateDebugTopic_, 1)
+    dmCurrentStateDebugPub_ = nh_.advertise<std_msgs::String>(stateDebugTopic_, 1)
+    targetPosesDebugPub_ = nh_.advertise<geometry_msgs::PoseArray>(targetPosesDebugTopic_, 1)
 }
 
 DmMessageHandler::~DmMessageHandler() {
@@ -75,7 +78,7 @@ void DmMessageHandler::targetRobotArrayCallback(const elikos_msgs::TargetRobotAr
     //InformationManager::getInstance()->updateTargets(msg);
 }
 
-void DmMessageHandler::publishDmCmd(const geometry_msgs::Pose& destPose, int cmdCode) {
+void DmMessageHandler::publishDmCmd(const geometry_msgs::Pose& destPose, int cmdCode) const {
     geometry_msgs::PoseStamped poseStampedMsg;
     poseStampedMsg.pose = destPose;
     pose_msg.header.stamp = ros::Time::now();
@@ -88,8 +91,24 @@ void DmMessageHandler::publishDmCmd(const geometry_msgs::Pose& destPose, int cmd
     dmCmdPub_.publish(msg);
 }
 
-void DmMessageHandler::publishCurrentDmState(const std::string& state) {
-    std_msgs::String msg;
-    msg.data = state;
-    dmCurrentStatePub_.publish(msg);
+void DmMessageHandler::publishCurrentDmState(const std::string& state) const {
+    // \todo less ghetto way to do this?
+    if (isDebug_) {
+        std_msgs::String msg;
+        msg.data = state;
+
+        dmCurrentStateDebugPub_.publish(msg);
+    }
+}
+
+void DmMessageHandler::publishTargetPoses(const std::vector<geometry_msgs::Pose>& poses) const {
+    // \todo less ghetto way to do this?
+    if (isDebug_) {
+        geometry_msgs::PoseArray msg;
+        msg.poses = poses;
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = originTfName_;
+
+        targetPosesDebugPub_.publish(msg);
+    }
 }

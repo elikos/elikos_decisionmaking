@@ -13,7 +13,7 @@
  * \class Strategy
  * \brief asbtract class which defines a strategy.
  *
- * Gets launched, then switches between behaviours accordingly. One-time launch.
+ * Gets updated, then switches between behaviours accordingly.
  */
 class Strategy
 {
@@ -22,12 +22,26 @@ public:
     virtual ~Strategy();
 
     /**
-     * \brief Launch strategy.
+     * \brief Update strategy. Changes behaviour if needed.
      */
-    virtual void launch() =0;
+    virtual void update() =0;
+
+    /**
+     * \brief Get strategy name.
+     * 
+     * \return the strategy name.
+     */
+    virtual std::string getName() =0;
+
+    /**
+     * \brief Get current behaviour.
+     * 
+     * \return the behaviour.
+     */
+    Behaviour* getCurrentBehaviour();
 
 protected:
-    
+    Behaviour* currentBehaviour_; /**< the current behaviour */
 
 private:
     

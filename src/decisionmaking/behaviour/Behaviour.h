@@ -9,13 +9,12 @@
  */
 
 #include "Command.h"
-#include "CommandQueue.h"
 
 /**
  * \class Behaviour
  * \brief asbtract class which defines a behaviour.
  *
- * Gets started, then executes a list of commands until it's stopped.
+ * Gets updated, then executes and changes command accordingly.
  */
 class Behaviour
 {
@@ -24,24 +23,39 @@ public:
     virtual ~Behaviour();
 
     /**
-     * \brief Start behaviour.
+     * \brief Update behaviour. Changes current command if needed.
      */
-    virtual void start() =0;
+    virtual void update() =0;
 
     /**
-     * \brief Stop behaviour.
-     * \todo needed?
+     * \brief Get behaviour name.
+     * 
+     * \return the behaviour name.
      */
-    virtual void stop() =0;
+    virtual std::string getName() =0;
+
+    /**
+     * \brief Get current command.
+     * 
+     * \return the command.
+     */
+    Command* getCurrentCommand();
 
 protected:
-    CommandQueue cmdQ_; /**< command queue */
+    Command* currentCmd_; /**< the current command */
+
+    double hasReachedDestinationThreshold_; /**< threshold for checking if destination is reached (value from param server) */
 
     /**
-     * \brief Generate commands and add to command queue.
-     * \todo should this automatically add takeoff+landing commands to queue?
+     * \brief Checks if the destination has been reached; 
+     * useful for position-dependant commands.
+     * 
+     * \param currentPos : current position.
+     * \param dest : destination position.
+     * 
+     * \return true when destination has been reached.
      */
-    virtual void generateCommands() =0;
+    bool hasReachedDestination(const tf::Vector3& currentPos, const tf::Vector3& dest);
 
 private:
 

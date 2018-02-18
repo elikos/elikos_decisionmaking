@@ -21,13 +21,23 @@ public:
     TestFollowRobotStrategy();
     virtual ~TestFollowRobotStrategy();
 
-    virtual void launch();
+    /**
+     * \brief Update strategy. Changes behaviour if needed.
+     */
+    virtual void update();
+
+    /**
+     * \brief Get strategy name.
+     * 
+     * \return the strategy name.
+     */
+    virtual std::string getName();
 
 protected:
 
 
 private:
-    
+    static const std::string STRATEGY_NAME; /**< the name of the behaviour */
 
 };
 

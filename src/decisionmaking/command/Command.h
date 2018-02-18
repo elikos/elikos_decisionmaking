@@ -8,6 +8,7 @@
  * \author Olivier
  */
 
+#include <string>
 #include <ros/ros.h> // \todo remove?
 #include <tf/tf.h>
 
@@ -15,7 +16,7 @@
  * \class Command
  * \brief asbtract class which defines a command.
  *
- * Gets executed and checks when it's done.
+ * Gets called and publishes itself.
  */
 class Command
 {
@@ -24,34 +25,18 @@ public:
     virtual ~Command();
 
     /**
-     * \brief Command execution.
+     * \brief Command publishing.
      */
-    virtual void execute() =0;
+    virtual void publish() =0;
 
     /**
-     * \brief Command completion check.
+     * \brief Get command name.
      * 
-     * \return true when command is done.
+     * \return the command name.
      */
-    virtual bool isDone() =0;
+    virtual std::string getName() =0;
 
 protected:
-    // \todo add info about quad position (checks if it has reached destination)
-    // quad
-    // target
-
-    double hasReachedDestinationThreshold_; /**< threshold for checking if destination is reached (value from param server) */
-
-    /**
-     * \brief Checks if the destination has been reached; 
-     * useful for position-dependant commands.
-     * 
-     * \param currentPos : current position.
-     * \param dest : destination position.
-     * 
-     * \return true when destination has been reached.
-     */
-    bool hasReachedDestination(const tf::Vector3& currentPos, const tf::Vector3& dest);
 
     /**
      * \brief Helper method to send DM commands.

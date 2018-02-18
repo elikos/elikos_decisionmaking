@@ -6,6 +6,8 @@
 
 #include "StandbyCommand.h"
 
+const std::string StandbyCommand::COMMMAND_NAME = "Standby";
+
 StandbyCommand::StandbyCommand()
     : Command()
 {
@@ -15,10 +17,10 @@ StandbyCommand::StandbyCommand()
 StandbyCommand::~StandbyCommand() {
 }
 
-StandbyCommand::execute() {
+void StandbyCommand::publish() {
     //sendDmCmd(, elikos_msgs::DMCmd::STANDBY);
 }
 
-StandbyCommand::isDone() {
-
+std::string StandbyCommand::getName() {
+    return COMMMAND_NAME;
 }

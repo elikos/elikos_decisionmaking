@@ -12,3 +12,7 @@ Strategy::Strategy() {
 
 Strategy::~Strategy() {
 }
+
+Behaviour* Strategy::getCurrentBehaviour() {
+    return currentBehaviour_;
+}

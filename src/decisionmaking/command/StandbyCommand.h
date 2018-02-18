@@ -23,22 +23,22 @@ public:
     virtual ~StandbyCommand();
 
     /**
-     * \brief Command execution.
+     * \brief Command publishing.
      */
-    virtual void execute();
+    virtual void publish();
 
     /**
-     * \brief Command completion check.
-     * \todo when is this command done?
-     * \return true when command is done.
+     * \brief Get command name.
+     * 
+     * \return the command name.
      */
-    virtual bool isDone();
+    virtual std::string getName();
 
 protected:
 
 
 private:
-    
+    static const std::string COMMMAND_NAME; /**< the name of the command */
 };
 
 #endif // ELIKOS_DUNGEONMASTER_STANDBYCOMMAND_H

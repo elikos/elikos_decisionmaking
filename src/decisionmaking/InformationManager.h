@@ -7,9 +7,11 @@
  * \author christophebedard
  */
 
+#include <cmath>
 #include <list>
 #include <geometry_msgs/Pose.h>
 #include "Behaviour.h"
+#include "Quad.h"
 #include "TargetRobot.h"
 
 /**
@@ -83,6 +85,35 @@ private:
 
     int arenaDimension_; /**< the dimension of the arena (side) */
     int targetIncertitudeCountThreshold_; /**< the threshold defining valid targets */
+
+    /**
+     * \brief Compute squared distance between quad and given target.
+     * 
+     * \param target : the target robot.
+     * 
+     * \return the squared distance.
+     */
+    double distanceQuadTarget(TargetRobot* target) const;
+
+    /**
+     * \brief Helper method to compute squared distance between pose and point.
+     * 
+     * \param pose : the pose.
+     * \param point : the position.
+     * 
+     * \return the squared distance.
+     */
+    double distanceSquared(const geometry_msgs::Pose& pose, const geometry_msgs::Point& point) const;
+
+    /**
+     * \brief Helper method to compute squared distance between two points.
+     * 
+     * \param p1 : the first point.
+     * \param p2 : the second point.
+     * 
+     * \return the squared distance.
+     */
+    double distanceSquared(const geometry_msgs::Point& p1, const geometry_msgs::Point& p2) const;
 
     /**
      * \brief Private constructor.

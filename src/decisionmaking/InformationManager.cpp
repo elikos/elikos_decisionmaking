@@ -69,3 +69,15 @@ TargetRobot* InformationManager::getClosestTargetToGreenLine() const {
     // get target closest to green with counter value below threshold
     return nullptr;
 }
+
+double InformationManager::distanceSquaredQuadTarget(TargetRobot* target) const {
+    return distance(quad_->getPose(), target->getPosition());
+}
+
+double InformationManager::distanceSquared(const geometry_msgs::Pose& pose, const geometry_msgs::Point& point) const {
+    return distance(pose.position, point);
+}
+
+double InformationManager::distanceSquared(const geometry_msgs::Point& p1, const geometry_msgs::Point& p2) const {
+    return std::pow(p2.x - p1.x, 2.0) + std::pow(p2.y - p1.y, 2.0);
+}

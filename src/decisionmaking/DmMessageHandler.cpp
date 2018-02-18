@@ -8,7 +8,7 @@
 
 DmMessageHandler* DmMessageHandler::instance_ = nullptr;
 
-DmMessageHandler DmMessageHandler::getInstance() {
+DmMessageHandler* DmMessageHandler::getInstance() {
     if (instance_ == nullptr) {
         instance_ = new DmMessageHandler();
     }
@@ -31,15 +31,15 @@ DmMessageHandler::DmMessageHandler() {
     n_p.getParam("simulation", isSimulation_);
     n_p.getParam("debug", isDebug_);
     n_p.getParam("dm_state_debug_topic", stateDebugTopic_);
-    n_p.getParam("dm_target_poses_topic", targetPosesDebugTopic_)
+    n_p.getParam("dm_target_poses_topic", targetPosesDebugTopic_);
 
     // setup subscribers
     targetRobotArraySub_ = nh_.subscribe<elikos_msgs::TargetRobotArray>(targetArrayTopic_, 1, &DmMessageHandler::targetRobotArrayCallback, this);
     
     // setup publishers
     dmCmdPub_ = nh_.advertise<elikos_msgs::DMCmd>(cmdTopic_, 1);
-    dmCurrentStateDebugPub_ = nh_.advertise<std_msgs::String>(stateDebugTopic_, 1)
-    targetPosesDebugPub_ = nh_.advertise<geometry_msgs::PoseArray>(targetPosesDebugTopic_, 1)
+    dmCurrentStateDebugPub_ = nh_.advertise<std_msgs::String>(stateDebugTopic_, 1);
+    targetPosesDebugPub_ = nh_.advertise<geometry_msgs::PoseArray>(targetPosesDebugTopic_, 1);
 }
 
 DmMessageHandler::~DmMessageHandler() {
@@ -52,23 +52,23 @@ void DmMessageHandler::update() {
 
 void DmMessageHandler::updateQuadTf() {
     // lookup transform
-    tf::Transform transform;
+    tf::StampedTransform stampedTf;
     try {
-        tfListener_.lookupTransform(originTfName_, quadTfName_, ros::Time(0), transform);
+        tfListener_.lookupTransform(originTfName_, quadTfName_, ros::Time(0), stampedTf);
     } catch(tf::TransformException e) {
         ROS_ERROR("[DM MESSAGE HANDLER] error looking up quad tf");
         return;
     }
 
     // create pose msg
-    geometry_msgs::Transform geoTfMsg;
-    tf::transformTFToMsg(transform, geoTfMsg);
+    geometry_msgs::TransformStamped geoTfStMsg;
+    tf::transformStampedTFToMsg(stampedTf, geoTfStMsg);
 
     geometry_msgs::Pose poseMsg;
-    poseMsg.position.x = geoTfMsg.translation.x;
-    poseMsg.position.y = geoTfMsg.translation.y;
-    poseMsg.position.z = geoTfMsg.translation.z;
-    poseMsg.orientation = geoTfMsg.rotation;
+    poseMsg.position.x = geoTfStMsg.transform.translation.x;
+    poseMsg.position.y = geoTfStMsg.transform.translation.y;
+    poseMsg.position.z = geoTfStMsg.transform.translation.z;
+    poseMsg.orientation = geoTfStMsg.transform.rotation;
 
     InformationManager::getInstance()->updateQuad(poseMsg);
 }
@@ -80,8 +80,8 @@ void DmMessageHandler::targetRobotArrayCallback(const elikos_msgs::TargetRobotAr
 void DmMessageHandler::publishDmCmd(const geometry_msgs::Pose& destPose, int cmdCode) const {
     geometry_msgs::PoseStamped poseStampedMsg;
     poseStampedMsg.pose = destPose;
-    pose_msg.header.stamp = ros::Time::now();
-    pose_msg.header.frame_id = originTfName_;
+    poseStampedMsg.header.stamp = ros::Time::now();
+    poseStampedMsg.header.frame_id = originTfName_;
 
     elikos_msgs::DMCmd msg;
     msg.cmdCode = cmdCode;

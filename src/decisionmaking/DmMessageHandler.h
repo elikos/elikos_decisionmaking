@@ -10,9 +10,10 @@
 
 #include <string>
 #include <ros/ros.h> // \todo remove?
-#include <tf/transform_broadcaster.h>
+#include <tf/transform_listener.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <geometry_msgs/Transform.h>
+#include <geometry_msgs/PoseArray.h>
+#include <geometry_msgs/TransformStamped.h>
 #include <std_msgs/String.h>
 #include "elikos_msgs/TargetRobotArray.h"
 #include "elikos_msgs/DMCmd.h"
@@ -36,6 +37,11 @@ public:
      * \brief Instance deletion.
      */
     static void freeInstance();
+
+    /**
+     * \brief Update.
+     */
+    void update();
 
     /**
      * \brief DM command publisher method.
@@ -77,7 +83,7 @@ private:
 
     ros::Subscriber targetRobotArraySub_; /**< the target robot array subscriber (INPUT from detection) */
     ros::Publisher dmCmdPub_; /**< the command publisher (OUTPUT to path planning (!sim) or elikos_sim (sim)) */
-    ros::Publisher dmCurrentStatePub_; /**< the current state publisher (debug OUTPUT) */
+    ros::Publisher dmCurrentStateDebugPub_; /**< the current state publisher (debug OUTPUT) */
     ros::Publisher targetPosesDebugPub_; /**< the target poses publisher (debug OUTPUT) */
 
     tf::TransformListener tfListener_; /**< the tf listener */

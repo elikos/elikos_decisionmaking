@@ -23,6 +23,6 @@ include_directories(
     src/emulator
     src/decisionmaking)
 
-add_subdirectory(src/ai)
-add_subdirectory(src/emulator)
+#add_subdirectory(src/ai)
+#add_subdirectory(src/emulator)
 add_subdirectory(src/decisionmaking)

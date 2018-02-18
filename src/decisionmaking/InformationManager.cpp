@@ -8,7 +8,7 @@
 
 InformationManager* InformationManager::instance_ = nullptr;
 
-InformationManager InformationManager::getInstance() {
+InformationManager* InformationManager::getInstance() {
     if (instance_ == nullptr) {
         instance_ = new InformationManager();
     }
@@ -61,7 +61,8 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
     // (i,j) : distance between current target and new target
     int numCurrentTargets = targets_.size();
     int numNewTargets = newTargetPoints.size();
-    auto distances = new double[numCurrentTargets][numNewTargets]();
+    // \todo do somethign about this?
+    std::vector<std::vector<double>> distances(numCurrentTargets, std::vector<double>(numNewTargets));
     for (int i = 0; i < numCurrentTargets; ++i) {
         for (int j = 0; j < numNewTargets; ++j) {
             distances[i][j] = distanceSquared(targets_.at(i)->getPosition(),
@@ -103,14 +104,12 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
 
     // create new targets for unassigned new targets
     // find unassigned new target using the first row
-    for (int j = 0; i < numNewTargets; ++i) {
+    for (int j = 0; j < numNewTargets; ++j) {
         if (distances[0][j] != -1.0) {
             targets_.push_back(new TargetRobot(newTargetPoints.at(j)));
             distances[0][j] = -1.0; // unnecessary, but perhaps it's future-proof
         }
     }
-
-    delete[] distances;
 
     DmMessageHandler::getInstance()->publishTargetPoses(getTargetPoses());
 }
@@ -134,11 +133,11 @@ TargetRobot* InformationManager::getClosestTargetToGreenLine() const {
 }
 
 double InformationManager::distanceSquaredQuadTarget(TargetRobot* target) const {
-    return distance(quad_->getPose(), target->getPosition());
+    return distanceSquared(quad_->getPose(), target->getPosition());
 }
 
 double InformationManager::distanceSquared(const geometry_msgs::Pose& pose, const geometry_msgs::Point& point) const {
-    return distance(pose.position, point);
+    return distanceSquared(pose.position, point);
 }
 
 double InformationManager::distanceSquared(const geometry_msgs::Point& p1, const geometry_msgs::Point& p2) const {

@@ -9,9 +9,11 @@
 
 #include <cmath>
 #include <vector>
+#include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
 #include "elikos_msgs/TargetRobotArray.h"
-#include "Behaviour.h"
+//#include "behaviour/Behaviour.h"
+#include "DmMessageHandler.h"
 #include "Quad.h"
 #include "TargetRobot.h"
 
@@ -94,7 +96,7 @@ private:
      * 
      * \return the squared distance.
      */
-    double distanceQuadTarget(TargetRobot* target) const;
+    double distanceSquaredQuadTarget(TargetRobot* target) const;
 
     /**
      * \brief Helper method to compute squared distance between pose and point.

@@ -26,6 +26,6 @@ geometry_msgs::Pose Quad::getPose() const {
     return pose_;
 }
 
-void Quad::updatePose(geometry_msgs::Pose pose) {
+void Quad::updatePose(const geometry_msgs::Pose& pose) {
     pose_ = pose;
 }

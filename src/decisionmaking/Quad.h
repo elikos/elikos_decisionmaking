@@ -45,7 +45,7 @@ public:
      * 
      * \param pose : the latest pose.
      */
-    void updatePose(geometry_msgs::Pose pose);
+    void updatePose(const geometry_msgs::Pose& pose);
 
 private:
     geometry_msgs::Pose pose_; /**< the position of the target robot */

@@ -8,7 +8,7 @@
 
 TargetRobot::TargetRobot(geometry_msgs::Point pos)
     : pos_(pos),
-      orientation_(0.0) // orientation is only estimated after the first call to updatePosition()
+      orientation_(0.0), // orientation is only estimated after the first call to updatePosition()
       incertitudeCount_(0)
 {
 }

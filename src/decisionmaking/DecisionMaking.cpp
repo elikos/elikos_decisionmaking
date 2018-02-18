@@ -5,7 +5,7 @@
  */
 
 #include <string>
-#include "Strategy.h"
+//#include "stategy/Strategy.h"
 #include "DmMessageHandler.h"
 #include "InformationManager.h"
 
@@ -26,21 +26,22 @@ int main(int argc, char* argv[])
     //strat->launch();
 
     // init
-    MessageHandler::getInstance();
+    DmMessageHandler::getInstance();
     InformationManager::getInstance();
 
     ros::Rate rate(30);
     while (ros::ok())
     {
-        MessageHandler::getInstance()->update();
+        DmMessageHandler::getInstance()->update();
 
         // update strategy, behaviour, and command
 
-        MessageHandler::getInstance()->publishCurrentDmState();
+        DmMessageHandler::getInstance()->publishCurrentDmState("strategy/behaviour/command");
+
         ros::spinOnce();
         rate.sleep();
     }
 
-    //DmMessageHandler::freeInstance();
-    //InformationManager::freeInstance();
+    DmMessageHandler::freeInstance();
+    InformationManager::freeInstance();
 }

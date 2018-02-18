@@ -101,8 +101,6 @@ private:
      */
     ~DmMessageHandler();
 
-
-
 };
 
 #endif // ELIKOS_DUNGEONMASTER_DMMESSAGEHANDLER_H

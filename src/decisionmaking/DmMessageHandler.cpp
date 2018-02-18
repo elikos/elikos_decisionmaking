@@ -85,5 +85,7 @@ void DmMessageHandler::publishDmCmd(const geometry_msgs::Pose& destPose, int cmd
 }
 
 void DmMessageHandler::publishCurrentDmState(const std::string& state) {
-    dmCurrentStatePub_.publish(state);
+    std_msgs::String msg;
+    msg.data = state;
+    dmCurrentStatePub_.publish(msg);
 }

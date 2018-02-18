@@ -44,6 +44,13 @@ public:
     void publishDmCmd(const geometry_msgs::Pose& destPose, int cmdCode);
 
     /**
+     * \brief Publishes the current state string.
+     * 
+     * \param state : the current state formatted as a string.
+     */
+    void publishCurrentDmState(const std::string& state);
+
+    /**
      * \brief Deleted copy constructor.
      */
     DmMessageHandler(const DmMessageHandler&) = delete;
@@ -64,9 +71,11 @@ private:
     std::string cmdTopic_; /**< the command topic */
     std::string originTfName_; /**< the tf name for the arena origin */
     std::string quadTfName_; /**< the tf name for the quad's position */
+    std::string stateDebugTopic_; /**< the name for the current state debug topic */
 
-    ros::Subscriber targetRobotArraySub_; /**< the target robot array subscriber (INPUT from tracking) */
-    ros::Publisher dmCmdPub_; /**< the command publisher (OUTPUT to path planning (!sim) or elikos_sim (sim) */
+    ros::Subscriber targetRobotArraySub_; /**< the target robot array subscriber (INPUT from detection) */
+    ros::Publisher dmCmdPub_; /**< the command publisher (OUTPUT to path planning (!sim) or elikos_sim (sim)) */
+    ros::Publisher dmCurrentStatePub_; /**< the current state publisher (debug OUTPUT) */
 
     tf::TransformListener tfListener_; /**< the tf listener */
 

@@ -22,7 +22,7 @@ void DmMessageHandler::freeInstance() {
 
 DmMessageHandler::DmMessageHandler() {
     // get params
-    // \todo limit scope of topic names
+    /// \todo limit scope of topic names
     ros::NodeHandle n_p("~");
     n_p.getParam("target_array_topic", targetArrayTopic_);
     n_p.getParam("cmd_topic", cmdTopic_);
@@ -46,7 +46,7 @@ DmMessageHandler::DmMessageHandler() {
 }
 
 DmMessageHandler::~DmMessageHandler() {
-    // \todo add if needed
+    /// \todo add if needed
 }
 
 void DmMessageHandler::update() {
@@ -94,7 +94,7 @@ void DmMessageHandler::publishDmCmd(const geometry_msgs::Pose& destPose, int cmd
 }
 
 void DmMessageHandler::publishCurrentDmState(const std::string& state) const {
-    // \todo less ghetto way to do this?
+    /// \todo less ghetto way to do this?
     if (isDebug_) {
         std_msgs::String msg;
         msg.data = state;
@@ -104,7 +104,7 @@ void DmMessageHandler::publishCurrentDmState(const std::string& state) const {
 }
 
 void DmMessageHandler::publishTargetPoses(const std::vector<geometry_msgs::Pose>& poses) const {
-    // \todo less ghetto way to do this?
+    /// \todo less ghetto way to do this?
     if (isDebug_) {
         geometry_msgs::PoseArray msg;
         msg.poses = poses;

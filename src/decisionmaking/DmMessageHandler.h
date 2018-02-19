@@ -9,7 +9,7 @@
  */
 
 #include <string>
-#include <ros/ros.h> // \todo remove?
+#include <ros/ros.h> /// \todo remove?
 #include <tf/transform_listener.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseArray.h>

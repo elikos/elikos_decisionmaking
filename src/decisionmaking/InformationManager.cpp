@@ -47,7 +47,7 @@ geometry_msgs::Pose InformationManager::getQuadPose() const {
 }
 
 void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::ConstPtr& msg) {
-    // \todo refactor/separate into multiple methods
+    /// \todo refactor/separate into multiple methods
 
     // convert TargetRobotArray to vector<Point>
     std::vector<geometry_msgs::Point> newTargetPoints;
@@ -63,7 +63,7 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
     int numNewTargets = newTargetPoints.size();
     std::vector<bool> isCurrentTargetAssigned(numCurrentTargets);
     std::vector<bool> isNewTargetAssigned(numNewTargets);
-    // \todo do something about this?
+    /// \todo do something about this?
     std::vector<std::vector<double>> distances(numCurrentTargets, std::vector<double>(numNewTargets));
     for (int i = 0; i < numCurrentTargets; ++i) {
         for (int j = 0; j < numNewTargets; ++j) {
@@ -115,19 +115,19 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
 }
 
 bool InformationManager::hasTarget() const {
-    // \todo implement
+    /// \todo implement
     // count number of targets with counter value below threshold
     return false;
 }
 
 TargetRobot* InformationManager::getClosestTargetToQuad() const {
-    // \todo implement
+    /// \todo implement
     // get target closest to quad with counter value below threshold
     return nullptr;
 }
 
 TargetRobot* InformationManager::getClosestTargetToGreenLine() const {
-    // \todo implement
+    /// \todo implement
     // get target closest to green with counter value below threshold
     return nullptr;
 }

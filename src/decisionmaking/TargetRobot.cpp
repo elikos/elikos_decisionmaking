@@ -45,6 +45,6 @@ void TargetRobot::incrementIncertitudeCounter() {
 }
 
 void TargetRobot::updateOrientation(const geometry_msgs::Point& newPos) {
-    // \todo use better estimation method?
+    /// \todo use better estimation method?
     orientation_ = atan2(newPos.y - pos_.y, newPos.x - pos_.x);
 }

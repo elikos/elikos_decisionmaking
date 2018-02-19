@@ -40,6 +40,9 @@ DmMessageHandler::DmMessageHandler() {
     dmCmdPub_ = nh_.advertise<elikos_msgs::DMCmd>(cmdTopic_, 1);
     dmCurrentStateDebugPub_ = nh_.advertise<std_msgs::String>(stateDebugTopic_, 1);
     targetPosesDebugPub_ = nh_.advertise<geometry_msgs::PoseArray>(targetPosesDebugTopic_, 1);
+
+    // wait for tf
+    tfListener_.waitForTransform(originTfName_, quadTfName_, ros::Time(0), ros::Duration(5.0));
 }
 
 DmMessageHandler::~DmMessageHandler() {

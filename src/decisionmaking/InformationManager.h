@@ -123,7 +123,7 @@ private:
      * 
      * \return the vector of poses.
      */
-    std::vector<geometry_msgs::Pose>& getTargetPoses() const;
+    std::vector<geometry_msgs::Pose> getTargetPoses() const;
 
     /**
      * \brief Private constructor.

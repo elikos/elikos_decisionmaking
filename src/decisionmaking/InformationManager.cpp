@@ -61,7 +61,9 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
     // (i,j) : distance between current target and new target
     int numCurrentTargets = targets_.size();
     int numNewTargets = newTargetPoints.size();
-    // \todo do somethign about this?
+    std::vector<bool> isCurrentTargetAssigned(numCurrentTargets);
+    std::vector<bool> isNewTargetAssigned(numNewTargets);
+    // \todo do something about this?
     std::vector<std::vector<double>> distances(numCurrentTargets, std::vector<double>(numNewTargets));
     for (int i = 0; i < numCurrentTargets; ++i) {
         for (int j = 0; j < numNewTargets; ++j) {
@@ -78,10 +80,12 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
         int jMinDist = 0;
         int minDist = distances[iMinDist][jMinDist];
         for (int i = 1; i < numCurrentTargets; ++i) {
+            if (isCurrentTargetAssigned.at(i)) break;
             for (int j = 1; j < numNewTargets; ++j) {
                 // if not already assigned and distance less than current minimum
+                if (isNewTargetAssigned.at(j)) break;
                 int curDist = distances[i][j];
-                if ((distances[i][j] != -1.0) && (curDist < minDist)) {
+                if (curDist < minDist) {
                     iMinDist = i;
                     jMinDist = j;
                     minDist = curDist;
@@ -89,25 +93,21 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
             }
         }
 
-        // set row and col corresponding to iMinDist and jMinDist to -1.0 to indicate that they've been assigned
-        for (int i = 0; i < numCurrentTargets; ++i) {
-            distances[i][jMinDist] = -1.0;
-        }
-        for (int j = 0; j < numNewTargets; ++j) {
-            distances[iMinDist][j] = -1.0;
-        }
+        // indicate that the two targets have been assigned
+        isCurrentTargetAssigned.at(iMinDist) = true;
+        isNewTargetAssigned.at(jMinDist) = true;
 
         // assign (set current target's position to new target's position)
         targets_.at(iMinDist)->updatePosition(newTargetPoints.at(jMinDist));
         assignedCurrentTargets++;
     }
-
+    
     // create new targets for unassigned new targets
     // find unassigned new target using the first row
     for (int j = 0; j < numNewTargets; ++j) {
-        if (distances[0][j] != -1.0) {
+        if (!isNewTargetAssigned.at(j)) {
             targets_.push_back(new TargetRobot(newTargetPoints.at(j)));
-            distances[0][j] = -1.0; // unnecessary, but perhaps it's future-proof
+            isNewTargetAssigned.at(j) = true; // unnecessary, but perhaps it's future-proof
         }
     }
 
@@ -144,7 +144,7 @@ double InformationManager::distanceSquared(const geometry_msgs::Point& p1, const
     return std::pow(p2.x - p1.x, 2.0) + std::pow(p2.y - p1.y, 2.0);
 }
 
-std::vector<geometry_msgs::Pose>& InformationManager::getTargetPoses() const {
+std::vector<geometry_msgs::Pose> InformationManager::getTargetPoses() const {
     std::vector<geometry_msgs::Pose> vec;
 
     for (auto it = targets_.begin(); it != targets_.end(); it++) {

@@ -28,7 +28,7 @@ int TargetRobot::getIncertitudeCount() const {
     return incertitudeCount_;
 }
 
-geometry_msgs::Pose& TargetRobot::getPose() const {
+geometry_msgs::Pose TargetRobot::getPose() const {
     geometry_msgs::Pose pose;
     pose.position = pos_;
     pose.orientation = tf::createQuaternionMsgFromYaw(orientation_);
@@ -45,6 +45,6 @@ void TargetRobot::incrementIncertitudeCounter() {
 }
 
 void TargetRobot::updateOrientation(const geometry_msgs::Point& newPos) {
-    // \todo use better estimation method
+    // \todo use better estimation method?
     orientation_ = atan2(newPos.y - pos_.y, newPos.x - pos_.x);
 }

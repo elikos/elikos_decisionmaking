@@ -56,7 +56,7 @@ public:
      * 
      * \return the pose.
      */
-    geometry_msgs::Pose& getPose() const;
+    geometry_msgs::Pose getPose() const;
 
     /**
      * \brief Update target robot position+orientation and reset counter.

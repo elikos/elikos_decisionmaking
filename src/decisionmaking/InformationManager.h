@@ -14,8 +14,8 @@
 #include "elikos_msgs/TargetRobotArray.h"
 //#include "behaviour/Behaviour.h"
 #include "DmMessageHandler.h"
-#include "Quad.h"
-#include "TargetRobot.h"
+#include "info/Quad.h"
+#include "info/TargetRobot.h"
 
 /**
  * \class InformationManager

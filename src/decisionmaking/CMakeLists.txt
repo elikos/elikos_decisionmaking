@@ -8,10 +8,10 @@ add_executable(elikos_decisionmaking2018
     DmMessageHandler.h
     InformationManager.cpp
     InformationManager.h
-    Quad.cpp
-    Quad.h
-    TargetRobot.cpp
-    TargetRobot.h
+    info/Quad.cpp
+    info/Quad.h
+    info/TargetRobot.cpp
+    info/TargetRobot.h
     #command/Command.h
     #behaviour/Behaviour.h
     #strategy/Strategy.h

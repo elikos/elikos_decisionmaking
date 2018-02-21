@@ -38,6 +38,8 @@ geometry_msgs::Pose TargetRobot::getPose() const {
 void TargetRobot::updatePosition(const geometry_msgs::Point& newPos) {
     updateOrientation(newPos);
     pos_ = newPos;
+    // reset incertitude counter (since its position was just updated)
+    incertitudeCount_ = 0;
 }
 
 void TargetRobot::incrementIncertitudeCounter() {

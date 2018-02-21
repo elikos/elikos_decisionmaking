@@ -72,23 +72,27 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
         }
     }
 
-    // assign all current targets to new targets
-    int assignedCurrentTargets = 0;
-    while (assignedCurrentTargets < numCurrentTargets) {
-        // find the (i,j) position of the minimum distance
+    // assign current targets to new targets (while there are enough targets to assign)
+    int numAssignedTargets = 0;
+    while (numAssignedTargets < std::min(numCurrentTargets, numNewTargets)) {
+        // find the (i,j) position of the minimum distance that's not already taken
         int iMinDist = 0;
         int jMinDist = 0;
         int minDist = distances[iMinDist][jMinDist];
         for (int i = 1; i < numCurrentTargets; ++i) {
-            if (isCurrentTargetAssigned.at(i)) break;
-            for (int j = 1; j < numNewTargets; ++j) {
-                // if not already assigned and distance less than current minimum
-                if (isNewTargetAssigned.at(j)) break;
-                int curDist = distances[i][j];
-                if (curDist < minDist) {
-                    iMinDist = i;
-                    jMinDist = j;
-                    minDist = curDist;
+            // if current target not already assigned
+            if (!isCurrentTargetAssigned.at(i)) {
+                for (int j = 1; j < numNewTargets; ++j) {
+                    // if not already assigned
+                    if (!isNewTargetAssigned.at(j)) {
+                        // if distance less than current minimum, update indexes
+                        int curDist = distances[i][j];
+                        if (curDist < minDist) {
+                            iMinDist = i;
+                            jMinDist = j;
+                            minDist = curDist;
+                        }
+                    }
                 }
             }
         }
@@ -99,15 +103,25 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
 
         // assign (set current target's position to new target's position)
         targets_.at(iMinDist)->updatePosition(newTargetPoints.at(jMinDist));
-        assignedCurrentTargets++;
+        numAssignedTargets++;
     }
     
-    // create new targets for unassigned new targets
-    // find unassigned new target using the first row
-    for (int j = 0; j < numNewTargets; ++j) {
-        if (!isNewTargetAssigned.at(j)) {
-            targets_.push_back(new TargetRobot(newTargetPoints.at(j)));
-            isNewTargetAssigned.at(j) = true; // unnecessary, but perhaps it's future-proof
+    // check unassigned targets (current or new)
+    if (numAssignedTargets < numNewTargets) {
+        // create new targets for unassigned new targets
+        for (int j = 0; j < numNewTargets; ++j) {
+            if (!isNewTargetAssigned.at(j)) {
+                targets_.push_back(new TargetRobot(newTargetPoints.at(j)));
+                isNewTargetAssigned.at(j) = true; // unnecessary, but perhaps it's future-proof
+            }
+        }
+    } else if (numAssignedTargets < numCurrentTargets) {
+        // increment counter for unassigned targets
+        for (int i = 0; i < numCurrentTargets; ++i) {
+            if (!isCurrentTargetAssigned.at(i)) {
+                targets_.at(i)->incrementIncertitudeCounter();
+                isCurrentTargetAssigned.at(i) = true; // unnecessary, but perhaps it's future-proof
+            }
         }
     }
 

@@ -66,6 +66,13 @@ public:
      */
     void publishTargetPoses(const std::vector<geometry_msgs::Pose>& poses) const;
 
+    /**
+     * \brief Publishes the MarkerArray of known targets for debug.
+     * 
+     * \param msg : the MarkerArray message.
+     */
+    void publishTargetMarkerArray(const visualization_msgs::MarkerArray& msg) const;
+
 private:
     static DmMessageHandler* instance_; /**< the instance itself */
 
@@ -80,11 +87,13 @@ private:
     std::string quadTfName_; /**< the tf name for the quad's position */
     std::string stateDebugTopic_; /**< the name for the current state debug topic */
     std::string targetPosesDebugTopic_; /**< the name for the target poses debug topic */
+    std::string targetMarkerArrayDebugTopic_; /**< the name for the target markerarray debug topic */
 
     ros::Subscriber targetRobotArraySub_; /**< the target robot array subscriber (INPUT from detection) */
     ros::Publisher dmCmdPub_; /**< the command publisher (OUTPUT to path planning (!sim) or elikos_sim (sim)) */
     ros::Publisher dmCurrentStateDebugPub_; /**< the current state publisher (debug OUTPUT) */
     ros::Publisher targetPosesDebugPub_; /**< the target poses publisher (debug OUTPUT) */
+    ros::Publisher targetMarkerArrayDebugPub_; /**< the target markerarray publisher (debug OUTPUT) */
 
     tf::TransformListener tfListener_; /**< the tf listener */
 

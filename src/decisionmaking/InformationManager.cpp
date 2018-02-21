@@ -116,6 +116,7 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
             }
         }
     } else if (numAssignedTargets < numCurrentTargets) {
+        ROS_INFO("increment counter for unassigned targets");
         // increment counter for unassigned targets
         for (int i = 0; i < numCurrentTargets; ++i) {
             if (!isCurrentTargetAssigned.at(i)) {
@@ -123,9 +124,11 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
                 isCurrentTargetAssigned.at(i) = true; // unnecessary, but perhaps it's future-proof
             }
         }
+        ROS_INFO("stop");
     }
 
     DmMessageHandler::getInstance()->publishTargetPoses(getTargetPoses());
+    DmMessageHandler::getInstance()->publishTargetMarkerArray(generateMarkerArray());
 }
 
 bool InformationManager::hasTarget() const {
@@ -166,4 +169,34 @@ std::vector<geometry_msgs::Pose> InformationManager::getTargetPoses() const {
     }
 
     return vec;
+}
+
+visualization_msgs::MarkerArray InformationManager::generateMarkerArray() const {
+    visualization_msgs::MarkerArray msgArray;
+
+    for (auto it = targets_.begin(); it != targets_.end(); it++) {
+        visualization_msgs::Marker msg;
+
+        msg.header.frame_id = "/elikos_arena_origin";
+        msg.id = it - targets_.begin();
+        msg.type = visualization_msgs::Marker::MESH_RESOURCE;
+        msg.action = visualization_msgs::Marker::ADD;
+        msg.mesh_resource = "package://elikos_roomba/models/robot_green.dae";
+        msg.pose = (*it)->getPose();
+        double icntd = ((double)((*it)->getIncertitudeCount()));
+        double thresholdd = ((double)targetIncertitudeCountThreshold_);
+        msg.color.r = 0.0 + std::min(1.0, icntd/thresholdd);
+        msg.color.g = 1.0;
+        msg.color.b = 0.0;
+        msg.color.a = 1.0;
+        msg.scale.x = 1.1;
+        msg.scale.y = 1.1;
+        msg.scale.z = 1.1;
+        msg.mesh_use_embedded_materials = true;
+        msg.lifetime = ros::Duration();
+
+        msgArray.markers.push_back(msg);
+    }
+
+    return msgArray;
 }

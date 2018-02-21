@@ -32,6 +32,7 @@ DmMessageHandler::DmMessageHandler() {
     n_p.getParam("debug", isDebug_);
     n_p.getParam("dm_state_debug_topic", stateDebugTopic_);
     n_p.getParam("dm_target_poses_topic", targetPosesDebugTopic_);
+    n_p.getParam("dm_target_markerarray_topic", targetMarkerArrayDebugTopic_);
 
     // setup subscribers
     targetRobotArraySub_ = nh_.subscribe<elikos_msgs::TargetRobotArray>(targetArrayTopic_, 1, &DmMessageHandler::targetRobotArrayCallback, this);
@@ -40,6 +41,7 @@ DmMessageHandler::DmMessageHandler() {
     dmCmdPub_ = nh_.advertise<elikos_msgs::DMCmd>(cmdTopic_, 1);
     dmCurrentStateDebugPub_ = nh_.advertise<std_msgs::String>(stateDebugTopic_, 1);
     targetPosesDebugPub_ = nh_.advertise<geometry_msgs::PoseArray>(targetPosesDebugTopic_, 1);
+    targetMarkerArrayDebugPub_ = nh_.advertise<visualization_msgs::MarkerArray>(targetMarkerArrayDebugTopic_, 1);
 
     // wait for tf
     tfListener_.waitForTransform(originTfName_, quadTfName_, ros::Time(0), ros::Duration(5.0));
@@ -112,5 +114,12 @@ void DmMessageHandler::publishTargetPoses(const std::vector<geometry_msgs::Pose>
         msg.header.frame_id = originTfName_;
 
         targetPosesDebugPub_.publish(msg);
+    }
+}
+
+void DmMessageHandler::publishTargetMarkerArray(const visualization_msgs::MarkerArray& msg) const {
+    /// \todo less ghetto way to do this?
+    if (isDebug_) {
+        targetMarkerArrayDebugPub_.publish(msg);
     }
 }

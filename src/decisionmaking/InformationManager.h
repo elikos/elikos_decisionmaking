@@ -11,6 +11,7 @@
 #include <vector>
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
+#include <visualization_msgs/MarkerArray.h>
 #include "elikos_msgs/TargetRobotArray.h"
 //#include "behaviour/Behaviour.h"
 #include "DmMessageHandler.h"
@@ -124,6 +125,13 @@ private:
      * \return the vector of poses.
      */
     std::vector<geometry_msgs::Pose> getTargetPoses() const;
+
+    /**
+     * \brief Generate a MarkerArray using target poses.
+     * 
+     * \return the MarkerArray message.
+     */
+    visualization_msgs::MarkerArray generateMarkerArray() const;
 
     /**
      * \brief Private constructor.

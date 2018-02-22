@@ -113,7 +113,7 @@ bool InformationManager::hasTarget() const {
 }
 
 int InformationManager::getNumValidTargets() const {
-    return std::count_if(targets_->begin(), targets_->end(), [&](TargetRobot* t)->bool{ return t->getIncertitudeCount() < this->targetIncertitudeCountThreshold_; });
+    return std::count_if(targets_->begin(), targets_->end(), [&](TargetRobot* t)->bool{ return t->getIncertitudeCount() <= this->targetIncertitudeCountThreshold_; });
 }
 
 TargetRobot* InformationManager::getClosestTargetToQuad() const {

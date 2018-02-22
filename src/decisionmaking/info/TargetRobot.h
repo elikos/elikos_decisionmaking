@@ -22,8 +22,9 @@ public:
      * \brief Constructor.
      * 
      * \param pos : the position of the target robot.
+     * \param incertitudeCountMax : maximum value for incertitude count.
      */
-    TargetRobot(geometry_msgs::Point pos);
+    TargetRobot(geometry_msgs::Point pos, int incertitudeCountMax);
 
     /**
      * \brief Destructor.
@@ -66,7 +67,7 @@ public:
     void updatePosition(const geometry_msgs::Point& pos);
 
     /**
-     * \brief Increment incertitude counter.
+     * \brief Increment incertitude counter (while keeping it below the maximum value).
      * When target robot was not seen after an update.
      */
     void incrementIncertitudeCounter();
@@ -75,6 +76,8 @@ private:
     geometry_msgs::Point pos_; /**< the position of the target robot */
     double orientation_; /**< the orientation of the target robot */
     int incertitudeCount_; /**< the counter of updates since it was last seen */
+
+    int incertitudeCountMax_; /**< maximum value for incertitude count */
 
     /**
      * \brief Update orientation by estimating it from last positions.

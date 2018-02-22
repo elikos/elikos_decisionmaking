@@ -1,6 +1,7 @@
 # decisionmaking numerical parameters
 dimension_c: 4
 target_incertitude_count_threshold: 30
+target_incertitude_count_max: 1000
 research_altitude: 1.5
 takeoff_altitude: 1
 edge_tolerance: 0.1

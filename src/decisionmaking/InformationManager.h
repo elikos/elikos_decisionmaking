@@ -90,6 +90,7 @@ private:
 
     int arenaDimension_; /**< the dimension of the arena (side) */
     int targetIncertitudeCountThreshold_; /**< the threshold defining valid targets */
+    int targetIncertitudeCountMax_; /**< the maximum value for target incertitude */
 
     /**
      * \brief Compute squared distance between quad and given target.

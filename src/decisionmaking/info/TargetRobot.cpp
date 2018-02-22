@@ -6,8 +6,9 @@
 
 #include "TargetRobot.h"
 
-TargetRobot::TargetRobot(geometry_msgs::Point pos)
+TargetRobot::TargetRobot(geometry_msgs::Point pos, int incertitudeCountMax)
     : pos_(pos),
+      incertitudeCountMax_(incertitudeCountMax),
       orientation_(0.0), // orientation is only estimated after the first call to updatePosition()
       incertitudeCount_(0)
 {
@@ -43,7 +44,7 @@ void TargetRobot::updatePosition(const geometry_msgs::Point& newPos) {
 }
 
 void TargetRobot::incrementIncertitudeCounter() {
-    incertitudeCount_++;
+    incertitudeCount_ = (incertitudeCount_ < incertitudeCountMax_) ? incertitudeCount_+1 : incertitudeCountMax_;
 }
 
 void TargetRobot::updateOrientation(const geometry_msgs::Point& newPos) {

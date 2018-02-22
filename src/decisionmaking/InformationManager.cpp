@@ -28,6 +28,7 @@ InformationManager::InformationManager() {
     ros::NodeHandle n_p("~");
     n_p.getParam("dimension_c", arenaDimension_);
     n_p.getParam("target_incertitude_count_threshold", targetIncertitudeCountThreshold_);
+    n_p.getParam("target_incertitude_count_max", targetIncertitudeCountMax_);
 }
 
 InformationManager::~InformationManager() {
@@ -88,7 +89,7 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
         // create new targets for unassigned new targets
         for (int j = 0; j < numNewTargets; ++j) {
             if (!isNewTargetAssigned.at(j)) {
-                targets_->push_back(new TargetRobot(newTargetPoints.at(j)));
+                targets_->push_back(new TargetRobot(newTargetPoints.at(j), targetIncertitudeCountMax_));
                 isNewTargetAssigned.at(j) = true; // unnecessary, but perhaps it's future-proof
             }
         }
@@ -195,8 +196,8 @@ visualization_msgs::MarkerArray InformationManager::generateMarkerArray() const 
         msg.action = visualization_msgs::Marker::ADD;
         msg.mesh_resource = "package://elikos_roomba/models/robot_green.dae";
         msg.pose = (*it)->getPose();
-        double icnt = (double)((*it)->getIncertitudeCount());
-        double threshold = (double)targetIncertitudeCountThreshold_;
+        double icnt = (double) ((*it)->getIncertitudeCount());
+        double threshold = (double) targetIncertitudeCountThreshold_;
         msg.color.r = std::min(1.0, icnt/threshold);
         msg.color.g = 1.0;
         msg.color.b = 0.0;

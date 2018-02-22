@@ -21,6 +21,7 @@ void InformationManager::freeInstance() {
 }
 
 InformationManager::InformationManager() {
+    targets_ = new std::vector<TargetRobot*>();
     quad_ = new Quad();
 
     // get param
@@ -31,9 +32,11 @@ InformationManager::InformationManager() {
 
 InformationManager::~InformationManager() {
     // delete targets
-    for (auto it = targets_.begin(); it != targets_.end(); it++) {
+    for (auto it = targets_->begin(); it != targets_->end(); it++) {
         delete (*it);
     }
+    delete targets_;
+
     // delete quad
     delete quad_;
 }
@@ -56,7 +59,7 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
     }
 
     // compute distance between each current target and each new target
-    int numCurrentTargets = targets_.size();
+    int numCurrentTargets = targets_->size();
     int numNewTargets = newTargetPoints.size();
     std::vector<bool> isCurrentTargetAssigned(numCurrentTargets);
     std::vector<bool> isNewTargetAssigned(numNewTargets);
@@ -76,7 +79,7 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
         isNewTargetAssigned.at(jMinDist) = true;
 
         // assign (set current target's position to new target's position)
-        targets_.at(iMinDist)->updatePosition(newTargetPoints.at(jMinDist));
+        targets_->at(iMinDist)->updatePosition(newTargetPoints.at(jMinDist));
         numAssignedTargets++;
     }
     
@@ -85,7 +88,7 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
         // create new targets for unassigned new targets
         for (int j = 0; j < numNewTargets; ++j) {
             if (!isNewTargetAssigned.at(j)) {
-                targets_.push_back(new TargetRobot(newTargetPoints.at(j)));
+                targets_->push_back(new TargetRobot(newTargetPoints.at(j)));
                 isNewTargetAssigned.at(j) = true; // unnecessary, but perhaps it's future-proof
             }
         }
@@ -93,7 +96,7 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
         // increment counter for unassigned targets
         for (int i = 0; i < numCurrentTargets; ++i) {
             if (!isCurrentTargetAssigned.at(i)) {
-                targets_.at(i)->incrementIncertitudeCounter();
+                targets_->at(i)->incrementIncertitudeCounter();
                 isCurrentTargetAssigned.at(i) = true; // unnecessary, but perhaps it's future-proof
             }
         }
@@ -137,20 +140,20 @@ double InformationManager::distanceSquared(const geometry_msgs::Point& p1, const
 std::vector<geometry_msgs::Pose> InformationManager::getTargetPoses() const {
     std::vector<geometry_msgs::Pose> vec;
 
-    for (auto it = targets_.begin(); it != targets_.end(); it++) {
+    for (auto it = targets_->begin(); it != targets_->end(); it++) {
         vec.push_back((*it)->getPose());
     }
 
     return vec;
 }
 
-void InformationManager::computeDistances(const std::vector<TargetRobot*>& targets, const std::vector<geometry_msgs::Point>& newTargetPoints, std::vector<std::vector<double>>& distances) {
+void InformationManager::computeDistances(std::vector<TargetRobot*>* targets, const std::vector<geometry_msgs::Point>& newTargetPoints, std::vector<std::vector<double>>& distances) {
     // i : current target
     // j : new target
     // (i,j) : squared distance between current target and new target
     for (int i = 0; i < distances.size(); ++i) {
         for (int j = 0; j < distances.at(0).size(); ++j) {
-            distances[i][j] = distanceSquared(targets.at(i)->getPosition(),
+            distances[i][j] = distanceSquared(targets->at(i)->getPosition(),
                                               newTargetPoints.at(j));
         }
     }
@@ -183,11 +186,11 @@ void InformationManager::findMinimumDistanceIndexes(const std::vector<std::vecto
 visualization_msgs::MarkerArray InformationManager::generateMarkerArray() const {
     visualization_msgs::MarkerArray msgArray;
 
-    for (auto it = targets_.begin(); it != targets_.end(); it++) {
+    for (auto it = targets_->begin(); it != targets_->end(); it++) {
         visualization_msgs::Marker msg;
 
         msg.header.frame_id = "/elikos_arena_origin";
-        msg.id = it - targets_.begin();
+        msg.id = it - targets_->begin();
         msg.type = visualization_msgs::Marker::MESH_RESOURCE;
         msg.action = visualization_msgs::Marker::ADD;
         msg.mesh_resource = "package://elikos_roomba/models/robot_green.dae";

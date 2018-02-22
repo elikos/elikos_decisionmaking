@@ -85,7 +85,7 @@ public:
 private:
     static InformationManager* instance_; /**< the instance itself */
     
-    std::vector<TargetRobot*> targets_; /**< the list of target robots */
+    std::vector<TargetRobot*>* targets_; /**< the vector of target robots */
     Quad* quad_; /**< the quad */
 
     int arenaDimension_; /**< the dimension of the arena (side) */
@@ -135,7 +135,7 @@ private:
      * 
      * \param distances : the reference to the vector of computed squared distances.
      */
-    void computeDistances(const std::vector<TargetRobot*>& targets, const std::vector<geometry_msgs::Point>& newTargetPoints, std::vector<std::vector<double>>& distances);
+    void computeDistances(std::vector<TargetRobot*>* targets, const std::vector<geometry_msgs::Point>& newTargetPoints, std::vector<std::vector<double>>& distances);
 
     /**
      * \brief Find the (i,j) indexes of the minimum distance between two targets that are not already taken.

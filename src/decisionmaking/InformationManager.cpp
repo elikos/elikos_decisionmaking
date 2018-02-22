@@ -117,9 +117,12 @@ int InformationManager::getNumValidTargets() const {
 }
 
 TargetRobot* InformationManager::getClosestTargetToQuad() const {
-    /// \todo implement
-    // get target closest to quad with counter value below threshold
-    return nullptr;
+    if (hasTarget()) {
+        auto minIt = std::min_element(targets_->begin(), targets_->end(), [&](TargetRobot* l, TargetRobot* r)->bool{ return this->distanceSquaredQuadTarget(l) < this->distanceSquaredQuadTarget(r); });
+        return (*minIt);
+    } else {
+        return nullptr;
+    }
 }
 
 TargetRobot* InformationManager::getClosestTargetToGreenLine() const {

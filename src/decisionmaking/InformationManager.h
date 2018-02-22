@@ -78,7 +78,7 @@ public:
     /**
      * \brief Find and get closest target to the quad.
      * 
-     * \return pointer to closest target to quad.
+     * \return pointer to closest target to quad if hasTarget(), otherwise nullptr.
      */
 	TargetRobot* getClosestTargetToQuad() const;
 

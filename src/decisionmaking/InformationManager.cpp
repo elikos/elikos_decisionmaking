@@ -126,9 +126,17 @@ TargetRobot* InformationManager::getClosestTargetToQuad() const {
 }
 
 TargetRobot* InformationManager::getClosestTargetToGreenLine() const {
-    /// \todo implement
-    // get target closest to green with counter value below threshold
-    return nullptr;
+    if (hasTarget()) {
+        auto minIt = std::min_element(targets_->begin(), targets_->end(), [&](TargetRobot* l, TargetRobot* r)->bool{ return this->distanceTargetToGreenLine(l) < this->distanceTargetToGreenLine(r); });
+        return (*minIt);
+    } else {
+        return nullptr;
+    }
+}
+
+double InformationManager::distanceTargetToGreenLine(TargetRobot* target) const {
+    // assuming the green line is at (y = arenaDimension_ / 2)
+    return ((double)arenaDimension_ / 2.0) - target->getPosition().y;
 }
 
 double InformationManager::distanceSquaredQuadTarget(TargetRobot* target) const {

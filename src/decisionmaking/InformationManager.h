@@ -85,7 +85,7 @@ public:
     /**
      * \brief Find and get closest target to the green line.
      * 
-     * \return pointer to closest target to the green line.
+     * \return pointer to closest target to the green line if hasTarget(), otherwise nullptr.
      */
 	TargetRobot* getClosestTargetToGreenLine() const;
 
@@ -127,6 +127,16 @@ private:
      * \return the squared distance.
      */
     double distanceSquared(const geometry_msgs::Point& p1, const geometry_msgs::Point& p2) const;
+
+    /**
+     * \brief Helper method to compute distance between the given target and the green line.
+     * Assuming the green line is at (y = arenaDimension_ / 2).
+     * 
+     * \param target : the target.
+     * 
+     * \return the distance.
+     */
+    double distanceTargetToGreenLine(TargetRobot* target) const;
 
     /**
      * \brief Retrieve a vector of target poses.

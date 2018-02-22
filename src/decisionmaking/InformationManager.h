@@ -62,11 +62,18 @@ public:
     void updateTargets(const elikos_msgs::TargetRobotArray::ConstPtr& msg);
 
     /**
-     * \brief Checks if valid target list is non-empty.
+     * \brief Check if there is at least one valid target.
      * 
      * \return true if >= 1 valid target.
      */
 	bool hasTarget() const;
+
+    /**
+     * \brief Get the number of valid targets (incertitude count below the threshold).
+     * 
+     * \return number of valid targets.
+     */
+    int getNumValidTargets() const;
 
     /**
      * \brief Find and get closest target to the quad.

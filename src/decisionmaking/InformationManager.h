@@ -7,6 +7,7 @@
  * \author christophebedard
  */
 
+#include <string>
 #include <cmath>
 #include <vector>
 #include <ros/ros.h>
@@ -125,6 +126,28 @@ private:
      * \return the vector of poses.
      */
     std::vector<geometry_msgs::Pose> getTargetPoses() const;
+
+    /**
+     * \brief Compute squared distance between each current target and each new target.
+     * 
+     * \param targets : the vector of targets.
+     * \param newTargetPoints : the vector of new target points.
+     * 
+     * \param distances : the reference to the vector of computed squared distances.
+     */
+    void computeDistances(const std::vector<TargetRobot*>& targets, const std::vector<geometry_msgs::Point>& newTargetPoints, std::vector<std::vector<double>>& distances);
+
+    /**
+     * \brief Find the (i,j) indexes of the minimum distance between two targets that are not already taken.
+     * 
+     * \param distances : the distances.
+     * \param isCurrentTargetAssigned : the bool vector indicating which current targets have been assigned.
+     * \param isNewTargetAssigned : the bool vector indicating which new targets have been assigned.
+     * 
+     * \param iMinDist : the reference to the i index of the minimum distance.
+     * \param jMinDist : the reference to the j index of the minimum distance.
+     */
+    void findMinimumDistanceIndexes(const std::vector<std::vector<double>>& distances, const std::vector<bool>& isCurrentTargetAssigned, const std::vector<bool>& isNewTargetAssigned, int& iMinDist, int& jMinDist);
 
     /**
      * \brief Generate a MarkerArray using target poses.

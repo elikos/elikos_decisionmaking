@@ -56,46 +56,20 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
     }
 
     // compute distance between each current target and each new target
-    // i : current target
-    // j : new target
-    // (i,j) : distance between current target and new target
     int numCurrentTargets = targets_.size();
     int numNewTargets = newTargetPoints.size();
     std::vector<bool> isCurrentTargetAssigned(numCurrentTargets);
     std::vector<bool> isNewTargetAssigned(numNewTargets);
-    /// \todo do something about this?
     std::vector<std::vector<double>> distances(numCurrentTargets, std::vector<double>(numNewTargets));
-    for (int i = 0; i < numCurrentTargets; ++i) {
-        for (int j = 0; j < numNewTargets; ++j) {
-            distances[i][j] = distanceSquared(targets_.at(i)->getPosition(),
-                                              newTargetPoints.at(j));
-        }
-    }
+    computeDistances(targets_, newTargetPoints, distances);
 
     // assign current targets to new targets (while there are enough targets to assign)
     int numAssignedTargets = 0;
     while (numAssignedTargets < std::min(numCurrentTargets, numNewTargets)) {
         // find the (i,j) position of the minimum distance that's not already taken
-        int iMinDist = 0;
-        int jMinDist = 0;
-        int minDist = distances[iMinDist][jMinDist];
-        for (int i = 1; i < numCurrentTargets; ++i) {
-            // if current target not already assigned
-            if (!isCurrentTargetAssigned.at(i)) {
-                for (int j = 1; j < numNewTargets; ++j) {
-                    // if not already assigned
-                    if (!isNewTargetAssigned.at(j)) {
-                        // if distance less than current minimum, update indexes
-                        int curDist = distances[i][j];
-                        if (curDist < minDist) {
-                            iMinDist = i;
-                            jMinDist = j;
-                            minDist = curDist;
-                        }
-                    }
-                }
-            }
-        }
+        int iMinDist;
+        int jMinDist;
+        findMinimumDistanceIndexes(distances, isCurrentTargetAssigned, isNewTargetAssigned, iMinDist, jMinDist);
 
         // indicate that the two targets have been assigned
         isCurrentTargetAssigned.at(iMinDist) = true;
@@ -116,7 +90,6 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
             }
         }
     } else if (numAssignedTargets < numCurrentTargets) {
-        ROS_INFO("increment counter for unassigned targets");
         // increment counter for unassigned targets
         for (int i = 0; i < numCurrentTargets; ++i) {
             if (!isCurrentTargetAssigned.at(i)) {
@@ -124,9 +97,9 @@ void InformationManager::updateTargets(const elikos_msgs::TargetRobotArray::Cons
                 isCurrentTargetAssigned.at(i) = true; // unnecessary, but perhaps it's future-proof
             }
         }
-        ROS_INFO("stop");
     }
 
+    // debug
     DmMessageHandler::getInstance()->publishTargetPoses(getTargetPoses());
     DmMessageHandler::getInstance()->publishTargetMarkerArray(generateMarkerArray());
 }
@@ -171,6 +144,42 @@ std::vector<geometry_msgs::Pose> InformationManager::getTargetPoses() const {
     return vec;
 }
 
+void InformationManager::computeDistances(const std::vector<TargetRobot*>& targets, const std::vector<geometry_msgs::Point>& newTargetPoints, std::vector<std::vector<double>>& distances) {
+    // i : current target
+    // j : new target
+    // (i,j) : squared distance between current target and new target
+    for (int i = 0; i < distances.size(); ++i) {
+        for (int j = 0; j < distances.at(0).size(); ++j) {
+            distances[i][j] = distanceSquared(targets.at(i)->getPosition(),
+                                              newTargetPoints.at(j));
+        }
+    }
+}
+
+void InformationManager::findMinimumDistanceIndexes(const std::vector<std::vector<double>>& distances, const std::vector<bool>& isCurrentTargetAssigned, const std::vector<bool>& isNewTargetAssigned, int& iMinDist, int& jMinDist) {
+    iMinDist = 0;
+    jMinDist = 0;
+    int minDist = distances[iMinDist][jMinDist];
+
+    for (int i = 1; i < distances.size(); ++i) {
+        // if current target not already assigned
+        if (!isCurrentTargetAssigned.at(i)) {
+            for (int j = 1; j < distances.at(0).size(); ++j) {
+                // if new target not already assigned
+                if (!isNewTargetAssigned.at(j)) {
+                    // if distance less than current minimum, update indexes and distance
+                    int curDist = distances[i][j];
+                    if (curDist < minDist) {
+                        iMinDist = i;
+                        jMinDist = j;
+                        minDist = curDist;
+                    }
+                }
+            }
+        }
+    }
+}
+
 visualization_msgs::MarkerArray InformationManager::generateMarkerArray() const {
     visualization_msgs::MarkerArray msgArray;
 
@@ -183,9 +192,9 @@ visualization_msgs::MarkerArray InformationManager::generateMarkerArray() const 
         msg.action = visualization_msgs::Marker::ADD;
         msg.mesh_resource = "package://elikos_roomba/models/robot_green.dae";
         msg.pose = (*it)->getPose();
-        double icntd = ((double)((*it)->getIncertitudeCount()));
-        double thresholdd = ((double)targetIncertitudeCountThreshold_);
-        msg.color.r = 0.0 + std::min(1.0, icntd/thresholdd);
+        double icnt = (double)((*it)->getIncertitudeCount());
+        double threshold = (double)targetIncertitudeCountThreshold_;
+        msg.color.r = std::min(1.0, icnt/threshold);
         msg.color.g = 1.0;
         msg.color.b = 0.0;
         msg.color.a = 1.0;

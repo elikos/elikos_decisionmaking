@@ -200,6 +200,8 @@ void InformationManager::findMinimumDistanceIndexes(const std::vector<std::vecto
 visualization_msgs::MarkerArray InformationManager::generateMarkerArray() const {
     visualization_msgs::MarkerArray msgArray;
 
+    auto closestToQuad = std::min_element(targets_->begin(), targets_->end(), [&](TargetRobot* l, TargetRobot* r)->bool{ return this->distanceSquaredQuadTarget(l) < this->distanceSquaredQuadTarget(r); });
+    
     for (auto it = targets_->begin(); it != targets_->end(); it++) {
         visualization_msgs::Marker msg;
 
@@ -209,17 +211,24 @@ visualization_msgs::MarkerArray InformationManager::generateMarkerArray() const 
         msg.action = visualization_msgs::Marker::ADD;
         msg.mesh_resource = "package://elikos_roomba/models/robot_green.dae";
         msg.pose = (*it)->getPose();
-        double icnt = (double) ((*it)->getIncertitudeCount());
-        double threshold = (double) targetIncertitudeCountThreshold_;
-        msg.color.r = std::min(1.0, icnt/threshold);
-        msg.color.g = 1.0;
-        msg.color.b = 0.0;
         msg.color.a = 1.0;
         msg.scale.x = 1.1;
         msg.scale.y = 1.1;
         msg.scale.z = 1.1;
         msg.mesh_use_embedded_materials = true;
         msg.lifetime = ros::Duration();
+
+        double icnt = (double) ((*it)->getIncertitudeCount());
+        double threshold = (double) targetIncertitudeCountThreshold_;
+        if (it != closestToQuad) {
+            msg.color.r = std::min(1.0, icnt/threshold);
+            msg.color.g = 1.0;
+            msg.color.b = 0.0;
+        } else {
+            msg.color.r = std::min(1.0, icnt/threshold);
+            msg.color.g = 0.0;
+            msg.color.b = 1.0;
+        }
 
         msgArray.markers.push_back(msg);
     }

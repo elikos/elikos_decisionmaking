@@ -118,8 +118,7 @@ int InformationManager::getNumValidTargets() const {
 
 TargetRobot* InformationManager::getClosestTargetToQuad() const {
     if (hasTarget()) {
-        auto minIt = std::min_element(targets_->begin(), targets_->end(), [&](TargetRobot* l, TargetRobot* r)->bool{ return this->distanceSquaredQuadTarget(l) < this->distanceSquaredQuadTarget(r); });
-        return (*minIt);
+        return *getItClosestTargetToQuad();
     } else {
         return nullptr;
     }
@@ -127,11 +126,18 @@ TargetRobot* InformationManager::getClosestTargetToQuad() const {
 
 TargetRobot* InformationManager::getClosestTargetToGreenLine() const {
     if (hasTarget()) {
-        auto minIt = std::min_element(targets_->begin(), targets_->end(), [&](TargetRobot* l, TargetRobot* r)->bool{ return this->distanceTargetToGreenLine(l) < this->distanceTargetToGreenLine(r); });
-        return (*minIt);
+        return *getItClosestTargetToGreenLine();
     } else {
         return nullptr;
     }
+}
+
+std::vector<TargetRobot*>::iterator InformationManager::getItClosestTargetToQuad() const {
+    return std::min_element(targets_->begin(), targets_->end(), [&](TargetRobot* l, TargetRobot* r)->bool{ return this->distanceSquaredQuadTarget(l) < this->distanceSquaredQuadTarget(r); });
+}
+
+std::vector<TargetRobot*>::iterator InformationManager::getItClosestTargetToGreenLine() const {
+    return std::min_element(targets_->begin(), targets_->end(), [&](TargetRobot* l, TargetRobot* r)->bool{ return this->distanceTargetToGreenLine(l) < this->distanceTargetToGreenLine(r); });
 }
 
 double InformationManager::distanceTargetToGreenLine(TargetRobot* target) const {
@@ -200,7 +206,7 @@ void InformationManager::findMinimumDistanceIndexes(const std::vector<std::vecto
 visualization_msgs::MarkerArray InformationManager::generateMarkerArray() const {
     visualization_msgs::MarkerArray msgArray;
 
-    auto closestToQuad = std::min_element(targets_->begin(), targets_->end(), [&](TargetRobot* l, TargetRobot* r)->bool{ return this->distanceSquaredQuadTarget(l) < this->distanceSquaredQuadTarget(r); });
+    auto closestToQuad = getItClosestTargetToQuad();
     
     for (auto it = targets_->begin(); it != targets_->end(); it++) {
         visualization_msgs::Marker msg;

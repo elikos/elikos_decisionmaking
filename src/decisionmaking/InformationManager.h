@@ -78,14 +78,14 @@ public:
     /**
      * \brief Find and get closest target to the quad.
      * 
-     * \return pointer to closest target to quad if hasTarget(), otherwise nullptr.
+     * \return the pointer to closest target to quad if hasTarget(), otherwise nullptr.
      */
 	TargetRobot* getClosestTargetToQuad() const;
 
     /**
      * \brief Find and get closest target to the green line.
      * 
-     * \return pointer to closest target to the green line if hasTarget(), otherwise nullptr.
+     * \return the pointer to closest target to the green line if hasTarget(), otherwise nullptr.
      */
 	TargetRobot* getClosestTargetToGreenLine() const;
 
@@ -98,6 +98,20 @@ private:
     int arenaDimension_; /**< the dimension of the arena (side) */
     int targetIncertitudeCountThreshold_; /**< the threshold defining valid targets */
     int targetIncertitudeCountMax_; /**< the maximum value for target incertitude */
+
+    /**
+     * \brief Get iterator of target closest to quad.
+     * 
+     * \return the iterator.
+     */
+    std::vector<TargetRobot*>::iterator getItClosestTargetToQuad() const;
+
+    /**
+     * \brief Get iterator of target closest to green line.
+     * 
+     * \return the iterator.
+     */
+    std::vector<TargetRobot*>::iterator getItClosestTargetToGreenLine() const;
 
     /**
      * \brief Compute squared distance between quad and given target.

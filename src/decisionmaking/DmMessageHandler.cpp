@@ -22,26 +22,28 @@ void DmMessageHandler::freeInstance() {
 
 DmMessageHandler::DmMessageHandler() {
     // get params
-    /// \todo limit scope of topic names
     ros::NodeHandle n_p("~");
-    n_p.getParam("target_array_topic", targetArrayTopic_);
-    n_p.getParam("cmd_topic", cmdTopic_);
+
+    std::string topicTargetArray, topicCmd, topicDebugState, topicDebugTargetPoses, topicDebugTargetMarkerArray;
+    n_p.getParam("target_array_topic", topicTargetArray);                      // the topic for target robot array
+    n_p.getParam("cmd_topic", topicCmd);                                       // the command topic
+    n_p.getParam("dm_state_debug_topic", topicDebugState);                     // the name for the current state debug topic
+    n_p.getParam("dm_target_poses_topic", topicDebugTargetPoses);              // the name for the target poses debug topic
+    n_p.getParam("dm_target_markerarray_topic", topicDebugTargetMarkerArray);  // the name for the target markerarray debug topic
+
     n_p.getParam("origin_tf_name", originTfName_);
     n_p.getParam("quad_tf_name", quadTfName_);
     n_p.getParam("simulation", isSimulation_);
     n_p.getParam("debug", isDebug_);
-    n_p.getParam("dm_state_debug_topic", stateDebugTopic_);
-    n_p.getParam("dm_target_poses_topic", targetPosesDebugTopic_);
-    n_p.getParam("dm_target_markerarray_topic", targetMarkerArrayDebugTopic_);
 
     // setup subscribers
-    targetRobotArraySub_ = nh_.subscribe<elikos_msgs::TargetRobotArray>(targetArrayTopic_, 1, &DmMessageHandler::targetRobotArrayCallback, this);
+    targetRobotArraySub_ = nh_.subscribe<elikos_msgs::TargetRobotArray>(topicTargetArray, 1, &DmMessageHandler::targetRobotArrayCallback, this);
     
     // setup publishers
-    dmCmdPub_ = nh_.advertise<elikos_msgs::DMCmd>(cmdTopic_, 1);
-    dmCurrentStateDebugPub_ = nh_.advertise<std_msgs::String>(stateDebugTopic_, 1);
-    targetPosesDebugPub_ = nh_.advertise<geometry_msgs::PoseArray>(targetPosesDebugTopic_, 1);
-    targetMarkerArrayDebugPub_ = nh_.advertise<visualization_msgs::MarkerArray>(targetMarkerArrayDebugTopic_, 1);
+    dmCmdPub_ = nh_.advertise<elikos_msgs::DMCmd>(topicCmd, 1);
+    dmCurrentStateDebugPub_ = nh_.advertise<std_msgs::String>(topicDebugState, 1);
+    targetPosesDebugPub_ = nh_.advertise<geometry_msgs::PoseArray>(topicDebugTargetPoses, 1);
+    targetMarkerArrayDebugPub_ = nh_.advertise<visualization_msgs::MarkerArray>(topicDebugTargetMarkerArray, 1);
 
     // wait for tf
     tfListener_.waitForTransform(originTfName_, quadTfName_, ros::Time(0), ros::Duration(5.0));

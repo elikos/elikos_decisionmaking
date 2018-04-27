@@ -81,13 +81,8 @@ private:
     bool isSimulation_; /**< the simulation state \todo needed? */
     bool isDebug_; /**< the debug flag */
 
-    std::string targetArrayTopic_; /**< the topic for target robot array */
-    std::string cmdTopic_; /**< the command topic */
     std::string originTfName_; /**< the tf name for the arena origin */
     std::string quadTfName_; /**< the tf name for the quad's position */
-    std::string stateDebugTopic_; /**< the name for the current state debug topic */
-    std::string targetPosesDebugTopic_; /**< the name for the target poses debug topic */
-    std::string targetMarkerArrayDebugTopic_; /**< the name for the target markerarray debug topic */
 
     ros::Subscriber targetRobotArraySub_; /**< the target robot array subscriber (INPUT from detection) */
     ros::Publisher dmCmdPub_; /**< the command publisher (OUTPUT to path planning (!sim) or elikos_sim (sim)) */

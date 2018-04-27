@@ -48,7 +48,7 @@ public:
     void updatePose(const geometry_msgs::Pose& pose);
 
 private:
-    geometry_msgs::Pose pose_; /**< the pose of the quad */
+    geometry_msgs::Pose pose_; ///< the pose of the quad
 
 };
 

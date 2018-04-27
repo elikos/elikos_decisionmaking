@@ -74,23 +74,23 @@ public:
     void publishTargetMarkerArray(const visualization_msgs::MarkerArray& msg) const;
 
 private:
-    static DmMessageHandler* instance_; /**< the instance itself */
+    static DmMessageHandler* instance_; ///< the instance itself
 
-    ros::NodeHandle nh_; /**< the node hanlde \todo get pointer from DecisionMaking.cpp? */
+    ros::NodeHandle nh_; ///< the node hanlde \todo get pointer from DecisionMaking.cpp?
 
-    bool isSimulation_; /**< the simulation state \todo needed? */
-    bool isDebug_; /**< the debug flag */
+    bool isSimulation_; ///< the simulation state \todo needed?
+    bool isDebug_; ///< the debug flag
 
-    std::string originTfName_; /**< the tf name for the arena origin */
-    std::string quadTfName_; /**< the tf name for the quad's position */
+    std::string originTfName_; ///< the tf name for the arena origin
+    std::string quadTfName_; ///< the tf name for the quad's position
 
-    ros::Subscriber targetRobotArraySub_; /**< the target robot array subscriber (INPUT from detection) */
-    ros::Publisher dmCmdPub_; /**< the command publisher (OUTPUT to path planning (!sim) or elikos_sim (sim)) */
-    ros::Publisher dmCurrentStateDebugPub_; /**< the current state publisher (debug OUTPUT) */
-    ros::Publisher targetPosesDebugPub_; /**< the target poses publisher (debug OUTPUT) */
-    ros::Publisher targetMarkerArrayDebugPub_; /**< the target markerarray publisher (debug OUTPUT) */
+    ros::Subscriber targetRobotArraySub_; ///< the target robot array subscriber (INPUT from detection)
+    ros::Publisher dmCmdPub_; ///< the command publisher (OUTPUT to path planning (!sim) or elikos_sim (sim))
+    ros::Publisher dmCurrentStateDebugPub_; ///< the current state publisher (debug OUTPUT)
+    ros::Publisher targetPosesDebugPub_; ///< the target poses publisher (debug OUTPUT)
+    ros::Publisher targetMarkerArrayDebugPub_; ///< the target markerarray publisher (debug OUTPUT)
 
-    tf::TransformListener tfListener_; /**< the tf listener */
+    tf::TransformListener tfListener_; ///< the tf listener
 
     /**
      * \brief Callback method for target robot array INPUT.

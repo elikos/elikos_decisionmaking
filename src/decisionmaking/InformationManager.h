@@ -90,14 +90,14 @@ public:
 	TargetRobot* getClosestTargetToGreenLine() const;
 
 private:
-    static InformationManager* instance_; /**< the instance itself */
+    static InformationManager* instance_;   ///< the instance itself
     
-    std::vector<TargetRobot*>* targets_; /**< the vector of target robots */
-    Quad* quad_; /**< the quad */
+    std::vector<TargetRobot*>* targets_;    ///< the vector of target robots
+    Quad* quad_;                            ///< the quad
 
-    int arenaDimension_; /**< the dimension of the arena (side) */
-    int targetIncertitudeCountThreshold_; /**< the threshold defining valid targets */
-    int targetIncertitudeCountMax_; /**< the maximum value for target incertitude */
+    int arenaDimension_;                    ///< the dimension of the arena (side)
+    int targetIncertitudeCountThreshold_;   ///< the threshold defining valid targets
+    int targetIncertitudeCountMax_;         ///< the maximum value for target incertitude
 
     /**
      * \brief Get iterator of target closest to quad.
@@ -206,7 +206,7 @@ private:
     /**
      * \brief Deleted copy assignment.
      */
-    void operator=(const InformationManager&)  = delete;
+    void operator=(const InformationManager&) = delete;
 
 };
 

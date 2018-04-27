@@ -73,11 +73,10 @@ public:
     void incrementIncertitudeCounter();
 
 private:
-    geometry_msgs::Point pos_; /**< the position of the target robot */
-    double orientation_; /**< the orientation of the target robot */
-    int incertitudeCount_; /**< the counter of updates since it was last seen */
-
-    int incertitudeCountMax_; /**< maximum value for incertitude count */
+    geometry_msgs::Point pos_;  ///< the position of the target robot
+    double orientation_;        ///< the orientation of the target robot
+    int incertitudeCount_;      ///< the counter of updates since it was last seen
+    int incertitudeCountMax_;   ///< maximum value for incertitude count
 
     /**
      * \brief Update orientation by estimating it from last positions.

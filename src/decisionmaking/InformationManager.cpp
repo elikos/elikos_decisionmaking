@@ -21,12 +21,20 @@ void InformationManager::freeInstance() {
 }
 
 InformationManager::InformationManager() {
+    // initialize target container and quad
     targets_ = new std::vector<TargetRobot*>();
     quad_ = new Quad();
 
-    // get param
+    // get params
     ros::NodeHandle n_p("~");
+
+    // arena constraints
     n_p.getParam("dimension_c", arenaDimension_);
+
+    // flight parameters
+    n_p.getParam("takeoff_altitude", takeoffAltitude_);
+
+    // target tracking
     n_p.getParam("target_incertitude_count_threshold", targetIncertitudeCountThreshold_);
     n_p.getParam("target_incertitude_count_max", targetIncertitudeCountMax_);
 }

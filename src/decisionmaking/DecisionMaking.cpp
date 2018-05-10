@@ -5,7 +5,7 @@
  */
 
 #include <string>
-//#include "stategy/Strategy.h"
+#include "stategy/StrategyFactory.h"
 #include "DmMessageHandler.h"
 #include "InformationManager.h"
 
@@ -22,12 +22,14 @@ int main(int argc, char* argv[])
     ROS_INFO_STREAM("[DM] chosen strategy : " + chosenStrategy);
 
     // Choose corresponding strategy
-    //Strategy* strat = new Whatever();
-    //strat->launch();
+    std::unique_ptr<Strategy> strat = StrategyFactory::create(chosenStrategy);
 
-    // init
+    // init handler/manager
     DmMessageHandler::getInstance();
     InformationManager::getInstance();
+
+    // launch strategy
+    //strat->launch();
 
     ros::Rate rate(30);
     while (ros::ok())
@@ -35,6 +37,7 @@ int main(int argc, char* argv[])
         DmMessageHandler::getInstance()->update();
 
         // update strategy, behaviour, and command
+        //strat->update();
 
         DmMessageHandler::getInstance()->publishCurrentDmState("strategy/behaviour/command");
 
@@ -42,6 +45,8 @@ int main(int argc, char* argv[])
         rate.sleep();
     }
 
+    // shutdown
+    strat.reset();
     DmMessageHandler::freeInstance();
     InformationManager::freeInstance();
 }

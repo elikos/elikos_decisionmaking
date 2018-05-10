@@ -27,6 +27,17 @@ public:
     virtual void update() =0;
 
     /**
+     * \brief One-time takeoff/init.
+     */
+    void takeoff();
+
+    /**
+     * \brief Stop and land.
+     * Should
+     */
+    void land();
+
+    /**
      * \brief Get strategy name.
      * 
      * \return the strategy name.
@@ -41,7 +52,7 @@ public:
     Behaviour* getCurrentBehaviour();
 
 protected:
-    Behaviour* currentBehaviour_; /**< the current behaviour */
+    Behaviour* currentBehaviour_; /**< the current behaviour
 
 private:
     

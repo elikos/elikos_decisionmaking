@@ -11,8 +11,17 @@ Strategy::Strategy() {
 }
 
 Strategy::~Strategy() {
+    //delete currentBehaviour_;
 }
 
 Behaviour* Strategy::getCurrentBehaviour() {
     return currentBehaviour_;
+}
+
+Strategy::takeoff() {
+
+}
+
+Strategy::land() {
+    
 }

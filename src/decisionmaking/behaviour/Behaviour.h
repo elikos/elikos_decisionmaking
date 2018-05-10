@@ -14,7 +14,7 @@
  * \class Behaviour
  * \brief asbtract class which defines a behaviour.
  *
- * Gets updated, then executes and changes command accordingly.
+ * Gets updated, changes then executes the current command accordingly.
  */
 class Behaviour
 {
@@ -42,7 +42,7 @@ public:
     Command* getCurrentCommand();
 
 protected:
-    Command* currentCmd_; /**< the current command */
+    Command* currentCmd_; ///< the current command
 
     double hasReachedDestinationThreshold_; /**< threshold for checking if destination is reached (value from param server) */
 

@@ -37,7 +37,7 @@ protected:
 
 
 private:
-    static const std::string STRATEGY_NAME; /**< the name of the behaviour */
+    static const std::string STRATEGY_NAME; ///< the name of the behaviour
 
 };
 

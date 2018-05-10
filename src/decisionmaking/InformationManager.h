@@ -89,6 +89,13 @@ public:
      */
 	TargetRobot* getClosestTargetToGreenLine() const;
 
+    /**
+     * \brief Takeoff altitude param accessor.
+     * \todo remove and simply call getParam() when needed?
+     * \return the takeoff altitude.
+     */
+    double getTakeoffAltitude() const;
+
 private:
     static InformationManager* instance_;   ///< the instance itself
     
@@ -96,6 +103,7 @@ private:
     Quad* quad_;                            ///< the quad
 
     int arenaDimension_;                    ///< the dimension of the arena (side)
+    double takeoffAltitude_;                ///< the takeoff altitude (m)
     int targetIncertitudeCountThreshold_;   ///< the threshold defining valid targets
     int targetIncertitudeCountMax_;         ///< the maximum value for target incertitude
 

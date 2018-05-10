@@ -13,7 +13,12 @@
  * \class Strategy
  * \brief asbtract class which defines a strategy.
  *
- * Gets updated, then switches between behaviours accordingly.
+ * Gets launched, then updated and switches between behaviours accordingly.
+ *      * launch() is to be called first every time. However, 
+ *          the concrete class may or may not call takeoff().
+ *      * stop() is to be called last every time. However,
+ *          the concrete class may or may not call land().
+ *      * (?) land() may be called at any time to safely land the drone.
  */
 class Strategy
 {
@@ -22,18 +27,29 @@ public:
     virtual ~Strategy();
 
     /**
+     * \brief Strategy launch. Might call takeoff(), depending on concrete strategy.
+     */
+    virtual void launch() =0;
+
+    /**
+     * \brief Strategy stop. Might call land(), depending on concrete strategy.
+     */
+    virtual void stop() =0;
+
+    /**
      * \brief Update strategy. Changes behaviour if needed.
      */
     virtual void update() =0;
 
     /**
      * \brief One-time takeoff/init.
+     * \todo should this be protected?
      */
     void takeoff();
 
     /**
-     * \brief Stop and land.
-     * Should
+     * \brief Land (forced or not).
+     * \todo should this be protected, or public for safety?
      */
     void land();
 
@@ -52,7 +68,7 @@ public:
     Behaviour* getCurrentBehaviour();
 
 protected:
-    Behaviour* currentBehaviour_; /**< the current behaviour
+    Behaviour* currentBehaviour_; ///< the current behaviour
 
 private:
     

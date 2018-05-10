@@ -8,6 +8,7 @@
  * \author christophebedard
  */
 
+#include <memory>
 #include <string>
 #include <ros/ros.h> /// \todo remove?
 #include <tf/transform_listener.h>
@@ -18,6 +19,7 @@
 #include "elikos_msgs/TargetRobotArray.h"
 #include "elikos_msgs/DMCmd.h"
 #include "InformationManager.h"
+#include "strategy/Strategy.h"
 
 /**
  * \class DmMessageHandler
@@ -55,9 +57,9 @@ public:
     /**
      * \brief Publishes the current state string.
      * 
-     * \param state : the current state formatted as a string.
+     * \param strategy : the current strategy.
      */
-    void publishCurrentDmState(const std::string& state) const;
+    void publishCurrentDmState(std::unique_ptr<Strategy>& strategy) const;
 
     /**
      * \brief Publishes the poses of known targets for debug.

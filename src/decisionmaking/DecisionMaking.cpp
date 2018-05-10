@@ -9,6 +9,7 @@
 #include "DmMessageHandler.h"
 #include "InformationManager.h"
 
+
 int main(int argc, char* argv[])
 {
     // ROS init
@@ -36,16 +37,19 @@ int main(int argc, char* argv[])
     {
         DmMessageHandler::getInstance()->update();
 
-        // update strategy, behaviour, and command
-        //strat->update();
+        // update strategy: behaviour + command
+        strat->update();
 
-        DmMessageHandler::getInstance()->publishCurrentDmState("strategy/behaviour/command");
+        DmMessageHandler::getInstance()->publishCurrentDmState(formatCurrentState(strat));
 
         ros::spinOnce();
         rate.sleep();
     }
 
-    // shutdown
+    // shutdown, for safety?
+    start->land();
+
+    // free
     strat.reset();
     DmMessageHandler::freeInstance();
     InformationManager::freeInstance();

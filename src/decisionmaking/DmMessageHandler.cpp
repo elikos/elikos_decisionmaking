@@ -97,12 +97,13 @@ void DmMessageHandler::publishDmCmd(const geometry_msgs::Pose& destPose, int cmd
     dmCmdPub_.publish(msg);
 }
 
-void DmMessageHandler::publishCurrentDmState(const std::string& state) const {
+void DmMessageHandler::publishCurrentDmState(std::unique_ptr<Strategy>& strat) const {
     /// \todo less ghetto way to do this?
     if (isDebug_) {
         std_msgs::String msg;
-        msg.data = state;
-
+        msg.data = strat->getName()
+                   + "/" + strat->getCurrentBehaviour()->getName()
+                   + "/" + strat->getCurrentBehaviour()->getCurrentCommand()->getName();
         dmCurrentStateDebugPub_.publish(msg);
     }
 }

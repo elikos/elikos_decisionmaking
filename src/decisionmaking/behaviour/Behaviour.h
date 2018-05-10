@@ -44,7 +44,7 @@ public:
 protected:
     Command* currentCmd_; ///< the current command
 
-    double hasReachedDestinationThreshold_; /**< threshold for checking if destination is reached (value from param server) */
+    double hasReachedDestinationThreshold_; ///< threshold for checking if destination is reached (value from param server)
 
     /**
      * \brief Checks if the destination has been reached; 
